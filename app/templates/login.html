@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}로그인 · 공지사항 알리미{% endblock %}
+{% block content %}
+  <h1>로그인</h1>
+  {% if registered %}<p class="notice">가입이 완료됐어요. 로그인해 주세요.</p>{% endif %}
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="/login">
+    <label for="email">이메일</label>
+    <input id="email" name="email" type="email" autocomplete="email" maxlength="320" required value="{{ email }}">
+    <label for="password">비밀번호</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required>
+    <button type="submit">로그인</button>
+  </form>
+  <p class="muted">계정이 없다면 <a href="/register">회원가입</a></p>
+{% endblock %}

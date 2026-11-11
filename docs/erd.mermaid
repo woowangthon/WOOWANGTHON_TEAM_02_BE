@@ -1,0 +1,163 @@
+erDiagram
+    schools ||--o{ departments : has
+    departments ||--o{ departments : "parent_id"
+    schools ||--o{ users : "belongs"
+    departments ||--o{ users : "major"
+    users ||--o{ user_identities : "future"
+    users ||--o{ user_interests : selects
+    tags ||--o{ user_interests : ""
+    tags ||--o{ tag_keywords : "rule keywords"
+    schools ||--o{ notice_sources : owns
+    notice_sources ||--o{ notice_categories : has
+    notice_sources ||--o{ crawl_runs : logs
+    notice_sources ||--o{ notices : collects
+    notice_categories ||--o{ notices : classifies
+    notices ||--o{ notice_tags : tagged
+    tags ||--o{ notice_tags : ""
+    notices ||--o{ notice_targets : "target"
+    departments ||--o{ notice_targets : ""
+    notices ||--o{ notice_attachments : "future"
+    notices ||--o{ notice_events : "future"
+    users ||--o{ user_notice_interactions : "future"
+    notices ||--o{ user_notice_interactions : "future"
+    users ||--o{ chat_sessions : starts
+    chat_sessions ||--o{ chat_messages : contains
+    chat_messages ||--o{ chat_message_sources : cites
+    notices ||--o{ chat_message_sources : "cited as"
+
+    schools {
+        bigint id PK
+        text name UK
+        text homepage_url
+        boolean is_active
+    }
+    departments {
+        bigint id PK
+        bigint school_id FK
+        bigint parent_id FK
+        text name
+    }
+    users {
+        bigint id PK
+        text email UK
+        text password_hash
+        bigint school_id FK
+        bigint department_id FK
+        smallint grade
+        text role
+        text status
+    }
+    user_identities {
+        bigint id PK
+        bigint user_id FK
+        text provider
+        text provider_user_id
+    }
+    tags {
+        bigint id PK
+        text code UK
+        text name
+        boolean is_user_selectable
+    }
+    tag_keywords {
+        bigint id PK
+        bigint tag_id FK
+        text keyword
+        smallint weight
+    }
+    user_interests {
+        bigint user_id PK
+        bigint tag_id PK
+    }
+    notice_sources {
+        bigint id PK
+        bigint school_id FK
+        text name
+        text source_type
+        text list_url
+        jsonb parser_config
+        boolean requires_auth
+        int crawl_interval_minutes
+        boolean is_active
+    }
+    notice_categories {
+        bigint id PK
+        bigint source_id FK
+        text name
+    }
+    crawl_runs {
+        bigint id PK
+        bigint source_id FK
+        text status
+        int fetched_count
+        int new_count
+        int updated_count
+        text error_message
+    }
+    notices {
+        bigint id PK
+        bigint source_id FK
+        bigint category_id FK
+        text external_id
+        text title
+        text content
+        text original_url
+        timestamptz posted_at
+        text content_hash
+        timestamptz deadline_at
+        text status
+    }
+    notice_tags {
+        bigint notice_id PK
+        bigint tag_id PK
+        text origin
+        real confidence
+    }
+    notice_targets {
+        bigint id PK
+        bigint notice_id FK
+        bigint department_id FK
+        smallint grade
+        text origin
+    }
+    notice_attachments {
+        bigint id PK
+        bigint notice_id FK
+        text kind
+        text file_url
+        text extracted_text
+        text extract_status
+    }
+    notice_events {
+        bigint id PK
+        bigint notice_id FK
+        text title
+        text event_type
+        timestamptz starts_at
+        timestamptz ends_at
+    }
+    user_notice_interactions {
+        bigint id PK
+        bigint user_id FK
+        bigint notice_id FK
+        text action
+    }
+    chat_sessions {
+        bigint id PK
+        bigint user_id FK
+        text title
+    }
+    chat_messages {
+        bigint id PK
+        bigint session_id FK
+        text role
+        text content
+        boolean is_grounded
+        text model
+    }
+    chat_message_sources {
+        bigint message_id PK
+        bigint notice_id PK
+        smallint rank
+        real relevance_score
+    }

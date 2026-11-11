@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}공지사항 알리미{% endblock %}
+{% block content %}
+  <section class="hero">
+    <div>
+      <p class="eyebrow">충북대학교 공지 모아보기</p>
+      <h1>새 공지를 한눈에 확인하세요</h1>
+      <p class="muted">학교 공식 공지 목록에서 최신 제목과 게시일을 가져옵니다.</p>
+    </div>
+    <div class="links">
+      <a class="button-link secondary" href="/me">내 프로필</a>
+      <a class="button-link" href="/login">로그인</a>
+    </div>
+  </section>
+
+  <section class="feed" aria-labelledby="feed-title">
+    <div class="feed-heading">
+      <div>
+        <h2 id="feed-title">공지 모아보기</h2>
+        <p id="feed-status" class="muted" role="status" aria-live="polite">학교 공지를 불러오는 중…</p>
+      </div>
+      <a class="text-link" href="https://www.cbnu.ac.kr/www/selectBbsNttList.do?bbsNo=8&amp;key=814&amp;pageIndex=1&amp;searchCnd=all&amp;searchCtgry=" target="_blank" rel="noopener noreferrer">충북대 원문 게시판 ↗</a>
+    </div>
+    <div class="feed-tabs" role="tablist" aria-label="공지 출처 선택">
+      <button class="feed-tab active" type="button" role="tab" aria-selected="true" data-scope="school">학교 공지</button>
+      <button class="feed-tab" type="button" role="tab" aria-selected="false" data-scope="department">학과·학부 공지</button>
+    </div>
+    <div id="notice-list" class="notice-list"></div>
+  </section>
+
+  <script defer src="{{ url_for('static', path='/js/notices.js') }}"></script>
+{% endblock %}

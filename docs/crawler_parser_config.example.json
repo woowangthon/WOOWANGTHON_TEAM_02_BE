@@ -1,0 +1,16 @@
+{
+  "terms_checked": false,
+  "item_selector": ".notice-row",
+  "title_selector": ".notice-title",
+  "link_selector": ".notice-title",
+  "date_selector": ".posted-date",
+  "date_attribute": "datetime",
+  "id_attribute": "data-notice-id",
+  "id_selector": null,
+  "id_query_parameter": null,
+  "category_selector": ".category",
+  "content_selector": ".notice-content",
+  "next_page_selector": ".pagination a.next",
+  "max_pages": 10,
+  "complete_snapshot": false
+}

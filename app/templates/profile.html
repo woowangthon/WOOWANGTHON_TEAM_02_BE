@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}내 정보 · 공지사항 알리미{% endblock %}
+{% block content %}
+  <h1>내 정보</h1>
+  <p><strong>이메일</strong> · {{ user.email }}</p>
+  <p><strong>학교</strong> · {{ user.school }}</p>
+  <p><strong>학과</strong> · {{ user.department }}</p>
+  <p><strong>학년</strong> · {{ user.grade }}학년</p>
+  <form method="post" action="/logout"><button type="submit">로그아웃</button></form>
+{% endblock %}

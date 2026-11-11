@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}회원가입 · 공지사항 알리미{% endblock %}
+{% block content %}
+  <h1>회원가입</h1>
+  <p>학교와 관심 분야를 등록하면 맞춤 공지를 받을 수 있어요.</p>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  {% if not schools or not departments %}
+    <p class="notice">가입에 필요한 학교 데이터가 아직 준비되지 않았습니다.</p>
+  {% else %}
+    <form method="post" action="/register">
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="320" required value="{{ email }}">
+
+      <label for="password">비밀번호</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+
+      <label for="school_id">학교</label>
+      <select id="school_id" name="school_id" required>
+        <option value="" disabled {% if selected_school_id is none %}selected{% endif %}>학교 선택</option>
+        {% for school in schools %}
+          <option value="{{ school[0] }}" {% if selected_school_id == school[0] %}selected{% endif %}>{{ school[1] }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="department_id">학과·학부</label>
+      <select id="department_id" name="department_id" required {% if selected_school_id is none %}disabled{% endif %}>
+        <option value="" disabled {% if selected_department_id is none %}selected{% endif %}>학과 선택</option>
+        {% set groups = namespace(school_id=none, college=none, open=false) %}
+        {% for department in departments %}
+          {% if groups.school_id != department[1] or groups.college != department[4] %}
+            {% if groups.open %}</optgroup>{% endif %}
+            <optgroup label="{{ department[2] }} · {{ department[4] }}" data-school-id="{{ department[1] }}" {% if selected_school_id != department[1] %}disabled{% endif %}>
+            {% set groups.school_id = department[1] %}
+            {% set groups.college = department[4] %}
+            {% set groups.open = true %}
+          {% endif %}
+          <option value="{{ department[0] }}" {% if selected_department_id == department[0] %}selected{% endif %}>{{ department[3] }}</option>
+        {% endfor %}
+        {% if groups.open %}</optgroup>{% endif %}
+      </select>
+
+      <label for="grade">학년</label>
+      <select id="grade" name="grade" required>
+        <option value="" disabled {% if selected_grade is none %}selected{% endif %}>학년 선택</option>
+        {% for value in range(1, 7) %}
+          <option value="{{ value }}" {% if selected_grade == value %}selected{% endif %}>{{ value }}학년</option>
+        {% endfor %}
+      </select>
+
+      {% if tags %}
+        <label>관심 분야</label>
+        <div>
+          {% for tag in tags %}
+            <label class="interest"><input type="checkbox" name="interest_ids" value="{{ tag[0] }}" {% if tag[0] in selected_interest_ids %}checked{% endif %}>{{ tag[1] }}</label>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <button type="submit">가입하기</button>
+    </form>
+    <script>
+      const schoolSelect = document.getElementById("school_id");
+      const departmentSelect = document.getElementById("department_id");
+
+      function filterDepartments() {
+        const schoolId = schoolSelect.value;
+        for (const group of departmentSelect.querySelectorAll("optgroup[data-school-id]")) {
+          group.disabled = group.dataset.schoolId !== schoolId;
+        }
+        departmentSelect.disabled = !schoolId;
+        const selectedGroup = departmentSelect.selectedOptions[0]?.parentElement;
+        if (departmentSelect.value && selectedGroup?.dataset.schoolId !== schoolId) {
+          departmentSelect.value = "";
+        }
+      }
+
+      schoolSelect.addEventListener("change", () => {
+        departmentSelect.value = "";
+        filterDepartments();
+      });
+      filterDepartments();
+    </script>
+  {% endif %}
+  <p class="muted">이미 가입했다면 <a href="/login">로그인</a></p>
+{% endblock %}

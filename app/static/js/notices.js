@@ -2,18 +2,42 @@ const statusNode = document.querySelector("#feed-status");
 const listNode = document.querySelector("#notice-list");
 const searchInput = document.querySelector("#notice-search");
 const tabs = [...document.querySelectorAll(".feed-tab")];
+const todayDate = document.querySelector("#today-date");
+const menuToggle = document.querySelector("[data-menu-toggle]");
+const mobileMenu = document.querySelector("[data-mobile-menu]");
 
 let activeView = "all";
 let notices = [];
 let requestController;
 
-function showMessage(message, className = "empty-state") {
+if (todayDate) {
+  const today = new Date();
+  todayDate.dateTime = today.toISOString().slice(0, 10);
+  todayDate.textContent = new Intl.DateTimeFormat("ko-KR", {
+    dateStyle: "full",
+  }).format(today);
+}
+
+menuToggle?.addEventListener("click", () => {
+  const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+  menuToggle.setAttribute("aria-expanded", String(!expanded));
+  menuToggle.setAttribute("aria-label", expanded ? "메뉴 열기" : "메뉴 닫기");
+  mobileMenu?.toggleAttribute("hidden", expanded);
+});
+
+function showMessage(message, className = "empty-state", description = "") {
   const note = document.createElement("div");
   note.className = className;
 
   const text = document.createElement("p");
   text.textContent = message;
   note.append(text);
+  if (description) {
+    const detail = document.createElement("p");
+    detail.className = "empty-description";
+    detail.textContent = description;
+    note.append(detail);
+  }
   listNode.replaceChildren(note);
 }
 
@@ -122,13 +146,13 @@ function renderNotices() {
     : notices;
 
   if (!filtered.length) {
-    showMessage(
-      query
-        ? `‘${searchInput.value.trim()}’ 검색 결과가 없습니다.`
-        : activeView === "recommended"
-          ? "현재 추천할 공지가 없습니다."
-          : "아직 수집된 공지가 없습니다.",
-    );
+    if (query) {
+      showMessage(`‘${searchInput.value.trim()}’ 검색 결과가 없습니다.`);
+    } else if (activeView === "recommended") {
+      showMessage("표시할 맞춤 공지가 없습니다.", "empty-state", "관심 분야와 대상이 맞는 공지가 등록되면 여기에 표시됩니다.");
+    } else {
+      showMessage("표시할 공지가 없습니다.", "empty-state", "연결된 게시판에서 공지를 불러오면 여기에 표시됩니다.");
+    }
     return;
   }
   listNode.replaceChildren(...filtered.map(makeNoticeCard));
@@ -140,7 +164,13 @@ async function loadNotices(tab) {
   requestController = new AbortController();
   listNode.setAttribute("aria-busy", "true");
   showMessage("공지를 불러오는 중입니다.", "loading-state");
-  statusNode.textContent = `${activeView === "recommended" ? "맞춤" : "전체"} 공지를 불러오는 중입니다.`;
+  const viewNames = {
+    all: "전체",
+    school: "학교",
+    department: "학과",
+    recommended: "맞춤",
+  };
+  statusNode.textContent = `${viewNames[activeView] || "전체"} 공지를 불러오는 중입니다.`;
 
   try {
     const response = await fetch(tab.dataset.endpoint, {
@@ -181,6 +211,21 @@ function selectTab(tab) {
   listNode.setAttribute("aria-labelledby", tab.id);
   loadNotices(tab);
 }
+
+document.querySelectorAll("[data-view-link]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const tab = tabs.find((item) => item.dataset.view === link.dataset.viewLink);
+    if (!tab) return;
+    if (window.location.pathname === "/") {
+      event.preventDefault();
+      selectTab(tab);
+      document.querySelector("#notice-feed")?.scrollIntoView({ behavior: "smooth" });
+    }
+    menuToggle?.setAttribute("aria-expanded", "false");
+    menuToggle?.setAttribute("aria-label", "메뉴 열기");
+    mobileMenu?.setAttribute("hidden", "");
+  });
+});
 
 tabs.forEach((tab, index) => {
   tab.addEventListener("click", () => selectTab(tab));

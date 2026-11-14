@@ -15,6 +15,7 @@ import psycopg
 from psycopg_pool import PoolTimeout
 
 from app.auth.router import router as auth_router
+from app.auth.router import _registration_options
 from app.config import get_settings
 from app.db.pool import create_pool
 from app.notices.router import router as notices_router
@@ -44,7 +45,12 @@ templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent / "tem
 
 @app.get("/", tags=["pages"], response_class=HTMLResponse)
 def home(request: Request) -> Any:
-    return templates.TemplateResponse(request=request, name="index.html")
+    registration_options = _registration_options(request.app.state.db_pool)
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context=registration_options,
+    )
 
 
 @app.get("/health", tags=["health"])

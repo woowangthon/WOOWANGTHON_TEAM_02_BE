@@ -12,7 +12,9 @@ let requestController;
 
 if (todayDate) {
   const today = new Date();
-  todayDate.dateTime = today.toISOString().slice(0, 10);
+  todayDate.dateTime = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10);
   todayDate.textContent = new Intl.DateTimeFormat("ko-KR", {
     dateStyle: "full",
   }).format(today);
@@ -54,9 +56,10 @@ function showLoginRequired() {
       ? "학교, 학과·학부, 학년과 관심 분야를 기준으로 맞춤 공지를 보여드립니다."
       : "내 학교의 공지 목록을 확인하려면 로그인해 주세요.";
 
-  const link = document.createElement("a");
+  const link = document.createElement("button");
   link.className = "inline-login-link";
-  link.href = "/login";
+  link.type = "button";
+  link.dataset.authOpen = "";
   link.textContent = "로그인하기";
 
   state.append(title, description, link);
@@ -215,12 +218,27 @@ function selectTab(tab) {
 document.querySelectorAll("[data-view-link]").forEach((link) => {
   link.addEventListener("click", (event) => {
     const tab = tabs.find((item) => item.dataset.view === link.dataset.viewLink);
-    if (!tab) return;
     if (window.location.pathname === "/") {
       event.preventDefault();
-      selectTab(tab);
+      if (tab) {
+        selectTab(tab);
+      } else if (link.dataset.viewLink === "saved") {
+        requestController?.abort();
+        activeView = "saved";
+        tabs.forEach((item) => {
+          item.classList.remove("active");
+          item.setAttribute("aria-selected", "false");
+          item.tabIndex = -1;
+        });
+        statusNode.textContent = "저장한 공지";
+        showMessage("저장한 공지가 없습니다.", "empty-state", "공지 저장 기능은 준비 중입니다.");
+      } else {
+        return;
+      }
       document.querySelector("#notice-feed")?.scrollIntoView({ behavior: "smooth" });
     }
+    document.querySelectorAll(".site-nav a").forEach((navLink) => navLink.classList.remove("nav-home"));
+    if (link.closest(".site-nav")) link.classList.add("nav-home");
     menuToggle?.setAttribute("aria-expanded", "false");
     menuToggle?.setAttribute("aria-label", "메뉴 열기");
     mobileMenu?.setAttribute("hidden", "");

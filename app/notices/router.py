@@ -17,18 +17,43 @@ def _pool(request: Request) -> ConnectionPool:
     return request.app.state.db_pool
 
 
+def _optional_user(
+    request: Request,
+    pool: Annotated[ConnectionPool, Depends(_pool)],
+) -> dict[str, Any] | None:
+    """Use the signed-in user's school, or show public CBNU notices to guests."""
+    try:
+        return get_current_user(request, pool)
+    except HTTPException as exc:
+        if exc.status_code == status.HTTP_401_UNAUTHORIZED:
+            return None
+        raise
+
+
 @router.get("")
 def list_notices(
     pool: Annotated[ConnectionPool, Depends(_pool)],
-    user: Annotated[dict[str, Any], Depends(get_current_user)],
+    user: Annotated[dict[str, Any] | None, Depends(_optional_user)],
     page: Annotated[int, Query(ge=1)] = 1,
     per_page: Annotated[int, Query(ge=1, le=100)] = 20,
     category_id: Annotated[int | None, Query(gt=0)] = None,
     scope: Annotated[Literal["school", "department"] | None, Query()] = None,
 ) -> dict[str, Any]:
-    """내 학교의 활성 공지를 최신순으로 페이지네이션해 반환한다."""
+    """공개 방문자에게 충북대 공지를, 로그인 사용자에게 소속 학교 공지를 반환한다."""
+    if user is not None:
+        school_id = user["school_id"]
+    else:
+        with pool.connection() as connection:
+            school_row = connection.execute(
+                "SELECT id FROM schools WHERE name = %s AND is_active",
+                ("충북대학교",),
+            ).fetchone()
+        if school_row is None:
+            return {"items": [], "total": 0, "page": page, "per_page": per_page, "pages": 0}
+        school_id = school_row[0]
+
     where = ["s.school_id = %s", "n.status = 'active'"]
-    parameters: list[Any] = [user["school_id"]]
+    parameters: list[Any] = [school_id]
     if scope is not None:
         where.append("COALESCE(s.parser_config->>'source_scope', 'school') = %s")
         parameters.append(scope)

@@ -4,54 +4,54 @@
   <section class="hero" id="top" aria-labelledby="page-title">
     <div class="hero-copy">
       <p class="today-date"><time id="today-date"></time></p>
-      <p class="eyebrow">충북대학교 공지 모아보기</p>
       <h1 id="page-title">놓치면 안 되는 공지만,<br>한곳에서 확인하세요.</h1>
-      <p class="intro-copy">학교 공식 게시판과 학과·학부 공지를 한곳에서 확인하고, 로그인하면 맞춤 공지를 볼 수 있습니다.</p>
+      <p class="intro-copy">로그인 없이 학교와 학과의 최신 공지를 확인할 수 있습니다.</p>
     </div>
     <label class="search-field" for="notice-search">
       <span class="sr-only">공지 검색</span>
       <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-      <input id="notice-search" type="search" placeholder="공지 검색" autocomplete="off">
-      <span class="search-shortcut" aria-hidden="true">검색</span>
+      <input id="notice-search" type="search" placeholder="제목, 내용, 담당 부서 검색" autocomplete="off">
     </label>
   </section>
 
-  <section class="feed" id="notice-feed" aria-labelledby="feed-title">
-    <div class="feed-heading">
-      <div>
-        <p class="eyebrow">내 학교 공지</p>
-        <h2 id="feed-title">공지 모아보기</h2>
+  <div class="home-layout">
+    <section class="feed" id="notice-feed" aria-labelledby="feed-title">
+      <div class="feed-heading">
+        <div>
+          <p class="eyebrow">내 학교 공지</p>
+          <h2 id="feed-title">공지 모아보기</h2>
+        </div>
+        <p id="feed-status" class="feed-status" role="status" aria-live="polite">공지를 불러오는 중입니다.</p>
       </div>
-      <p id="feed-status" class="feed-status" role="status" aria-live="polite">공지를 불러오는 중입니다.</p>
-    </div>
-    <div class="feed-toolbar">
-      <div class="feed-tabs" role="tablist" aria-label="공지 범위">
-        <button class="feed-tab" id="recommended-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="recommended" data-endpoint="/api/recommendations">맞춤 공지</button>
-        <button class="feed-tab active" id="all-tab" type="button" role="tab" aria-selected="true" aria-controls="notice-list" tabindex="0" data-view="all" data-endpoint="/api/notices?per_page=20">전체 공지</button>
-        <button class="feed-tab" id="school-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="school" data-endpoint="/api/notices?per_page=20&amp;scope=school">학교 공지</button>
-        <button class="feed-tab" id="department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="department" data-endpoint="/api/notices?per_page=20&amp;scope=department">학과 공지</button>
+      <div class="feed-toolbar">
+        <div class="feed-tabs" role="tablist" aria-label="공지 범위">
+          <button class="feed-tab" id="recommended-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="recommended" data-endpoint="/api/recommendations">맞춤 공지</button>
+          <button class="feed-tab active" id="all-tab" type="button" role="tab" aria-selected="true" aria-controls="notice-list" tabindex="0" data-view="all" data-endpoint="/api/notices?per_page=20">전체 공지</button>
+          <button class="feed-tab" id="school-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="school" data-endpoint="/api/notices?per_page=20&amp;scope=school">학교 공지</button>
+          <button class="feed-tab" id="department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="department" data-endpoint="/api/notices?per_page=20&amp;scope=department">학과 공지</button>
+        </div>
       </div>
-    </div>
-    <div id="notice-list" class="notice-list" role="tabpanel" aria-labelledby="all-tab"></div>
-  </section>
+      <div id="notice-list" class="notice-list" role="tabpanel" aria-labelledby="all-tab"></div>
+    </section>
 
-  <section class="discovery-grid" aria-label="공지 활용 도구와 연결된 게시판">
-    <article class="assistant-card" id="assistant">
-      <p class="eyebrow">공지 찾기</p>
-      <h2>필요한 내용을<br>질문으로 찾아보세요.</h2>
-      <p>학교 공지를 근거로 답변하고 원문을 함께 보여드립니다.</p>
-      <button class="assistant-button" type="button" disabled aria-describedby="assistant-status">공지 도우미 열기</button>
-      <span id="assistant-status" class="sr-only">공지 도우미 기능은 아직 준비 중입니다.</span>
-    </article>
-    <aside class="sources-card" id="sources" aria-labelledby="sources-title">
-      <p class="eyebrow">연결된 게시판</p>
-      <h2 id="sources-title">공지 출처</h2>
-      <ul class="source-list">
-        <li><a href="https://www.cbnu.ac.kr/www/selectBbsNttList.do?bbsNo=8&amp;key=814&amp;pageIndex=1&amp;searchCnd=all&amp;searchCtgry=" target="_blank" rel="noopener noreferrer"><span>충북대학교</span><span>공식 공지 ↗</span></a></li>
-        <li><a href="https://software.cbnu.ac.kr/sub0401" target="_blank" rel="noopener noreferrer"><span>소프트웨어학부</span><span>학부 공지 ↗</span></a></li>
-      </ul>
+    <aside class="home-sidebar" aria-label="공지 도구와 출처">
+      <section class="assistant-card" id="assistant">
+        <span class="assistant-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 4 4"></path></svg></span>
+        <p class="eyebrow">공지 찾기</p>
+        <h2>필요한 내용을<br>질문으로 찾아보세요.</h2>
+        <p>학교 공지를 근거로 답변하고 원문을 함께 보여드립니다.</p>
+        <button class="assistant-button" type="button" disabled aria-describedby="assistant-status">공지 도우미 열기 <span aria-hidden="true">→</span></button>
+        <span id="assistant-status" class="sr-only">공지 도우미 기능은 아직 준비 중입니다.</span>
+      </section>
+      <section class="sources-card" id="sources" aria-labelledby="sources-title">
+        <p class="eyebrow" id="sources-title">연결된 게시판</p>
+        <ul class="source-list">
+          <li><a href="https://www.cbnu.ac.kr/www/selectBbsNttList.do?bbsNo=8&amp;key=814&amp;pageIndex=1&amp;searchCnd=all&amp;searchCtgry=" target="_blank" rel="noopener noreferrer">충북대학교 공식 공지</a></li>
+          <li><a href="https://software.cbnu.ac.kr/sub0401" target="_blank" rel="noopener noreferrer">소프트웨어학부 공지</a></li>
+        </ul>
+      </section>
     </aside>
-  </section>
+  </div>
 {% endblock %}
 {% block scripts %}
   <script defer src="{{ url_for('static', path='/js/notices.js') }}"></script>

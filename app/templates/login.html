@@ -1,15 +1,24 @@
 {% extends "base.html" %}
-{% block title %}로그인 · 공지사항 알리미{% endblock %}
+{% block title %}로그인 · 알려줌{% endblock %}
 {% block content %}
-  <h1>로그인</h1>
-  {% if registered %}<p class="notice">가입이 완료됐어요. 로그인해 주세요.</p>{% endif %}
-  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
-  <form method="post" action="/login">
-    <label for="email">이메일</label>
-    <input id="email" name="email" type="email" autocomplete="email" maxlength="320" required value="{{ email }}">
-    <label for="password">비밀번호</label>
-    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required>
-    <button type="submit">로그인</button>
-  </form>
-  <p class="muted">계정이 없다면 <a href="/register">회원가입</a></p>
+  <section class="auth-layout">
+    <div class="auth-copy">
+      <p class="eyebrow">계정</p>
+      <h1>다시 만나서<br>반가워요.</h1>
+      <p>로그인하면 학교 정보와 관심 분야에 맞는 공지를 확인할 수 있습니다.</p>
+    </div>
+    <div class="form-card">
+      <h2>로그인</h2>
+      {% if registered %}<p class="notice" role="status">가입이 완료됐습니다. 로그인해 주세요.</p>{% endif %}
+      {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+      <form method="post" action="/login">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" autocomplete="email" maxlength="320" required value="{{ email }}">
+        <label for="password">비밀번호</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required>
+        <button class="primary-button" type="submit">로그인하기</button>
+      </form>
+      <p class="form-foot">계정이 없다면 <a href="/register">회원가입</a></p>
+    </div>
+  </section>
 {% endblock %}

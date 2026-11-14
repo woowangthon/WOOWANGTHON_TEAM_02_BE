@@ -3,13 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}공지사항 알리미{% endblock %}</title>
+  <meta name="theme-color" content="#174f32">
+  <title>{% block title %}알려줌 · 충북대학교 공지{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
 </head>
-<body>
-  <main>
-    <a href="/" class="muted">공지사항 알리미</a>
+<body {% block body_attributes %}{% endblock %}>
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="알려줌 홈">
+      <b aria-hidden="true">알</b>
+      <span><strong>알려줌</strong><small>충북대학교 공지 모아보기</small></span>
+    </a>
+    <div class="header-actions">
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href="/">공지</a>
+      </nav>
+      <div class="auth-state" data-auth-guest hidden>
+        <a class="text-action" href="/register">회원가입</a>
+        <a class="login-link" href="/login">로그인</a>
+      </div>
+      <div class="auth-state account-nav" data-auth-user hidden>
+        <a class="account-email" href="/me" data-auth-email aria-label="내 정보 보기"></a>
+        <a class="text-action" href="/me">내 정보</a>
+        <form method="post" action="/logout">
+          <button class="logout-button" type="submit">로그아웃</button>
+        </form>
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="site-main">
     {% block content %}{% endblock %}
   </main>
+  <script defer src="{{ url_for('static', path='/js/auth.js') }}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,10 +1,21 @@
 {% extends "base.html" %}
-{% block title %}내 정보 · 공지사항 알리미{% endblock %}
+{% block title %}내 정보 · 알려줌{% endblock %}
+{% block body_attributes %}data-authenticated="true" data-user-email="{{ user.email }}"{% endblock %}
 {% block content %}
-  <h1>내 정보</h1>
-  <p><strong>이메일</strong> · {{ user.email }}</p>
-  <p><strong>학교</strong> · {{ user.school }}</p>
-  <p><strong>학과</strong> · {{ user.department }}</p>
-  <p><strong>학년</strong> · {{ user.grade }}학년</p>
-  <form method="post" action="/logout"><button type="submit">로그아웃</button></form>
+  <section class="profile-page">
+    <div>
+      <p class="eyebrow">계정</p>
+      <h1>내 정보</h1>
+      <p class="intro-copy">맞춤 공지에 사용하는 기본 정보입니다.</p>
+    </div>
+    <dl class="profile-list">
+      <div><dt>이메일</dt><dd>{{ user.email }}</dd></div>
+      <div><dt>학교</dt><dd>{{ user.school }}</dd></div>
+      <div><dt>학과</dt><dd>{{ user.department }}</dd></div>
+      <div><dt>학년</dt><dd>{{ user.grade }}학년</dd></div>
+    </dl>
+    <form method="post" action="/logout">
+      <button class="secondary-button" type="submit">로그아웃</button>
+    </form>
+  </section>
 {% endblock %}

@@ -176,8 +176,8 @@ assistantDialog?.querySelector("[data-chat-form]")?.addEventListener("submit", a
   if (!question) return;
   appendChatMessage(question, "user");
   input.value = "";
-  chatStatus.textContent = "관련 공지를 찾고 있습니다.";
-  const pending = appendChatMessage("관련 공지를 찾고 있어요…");
+  chatStatus.textContent = "공지와 웹에서 답을 찾고 있습니다.";
+  const pending = appendChatMessage("답변을 찾고 있어요…");
   try {
     const response = await fetch("/api/assistant/chat", {
       method: "POST", credentials: "same-origin",
@@ -205,13 +205,38 @@ assistantDialog?.querySelector("[data-chat-form]")?.addEventListener("submit", a
       }
       chatMessages.append(result);
     });
-    chatStatus.textContent = data.ai_enabled
-      ? "공지 내용을 근거로 답변했습니다."
-      : data.no_matches
-        ? "질문과 관련된 공지를 찾지 못했습니다."
-      : data.ai_failed
-        ? "AI 응답에 실패했습니다. API 키와 모델 설정을 확인해 주세요."
-        : "공지 검색 결과입니다. AI API 키를 설정하면 답변을 받을 수 있습니다.";
+    const sources = Array.isArray(data.sources) ? data.sources : [];
+    if (sources.length) {
+      const sourceList = document.createElement("div");
+      sourceList.className = "chat-source-list";
+      const label = document.createElement("strong");
+      label.textContent = "웹 출처";
+      sourceList.append(label);
+      sources.forEach((source) => {
+        try {
+          const url = new URL(source.url);
+          if (!["http:", "https:"].includes(url.protocol)) return;
+          const link = document.createElement("a");
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = source.title || url.hostname;
+          sourceList.append(link);
+        } catch {
+          // Ignore malformed source URLs.
+        }
+      });
+      if (sourceList.querySelector("a")) chatMessages.append(sourceList);
+    }
+    chatStatus.textContent = data.answer_type === "web" && data.ai_enabled
+      ? "웹 검색 결과를 바탕으로 답변했습니다."
+      : data.ai_enabled
+        ? "학교 공지 내용을 근거로 답변했습니다."
+        : data.ai_failed
+          ? "답변을 가져오지 못했습니다. 잠시 후 다시 시도해 주세요."
+          : data.no_matches
+            ? "질문과 관련된 공지를 찾지 못했습니다."
+            : "공지 검색 결과입니다.";
   } catch (error) {
     pending.textContent = error.message || "잠시 후 다시 시도해 주세요.";
     chatStatus.textContent = "";

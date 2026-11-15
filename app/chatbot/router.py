@@ -52,13 +52,29 @@ def ask_notices(
     with pool.connection() as connection:
         candidates = select_candidates(connection, user["id"], question)
 
+    configured = is_ai_service_configured()
     if not candidates:
+        if configured:
+            try:
+                answer, sources = AIServiceClient().answer_with_web_search(question)
+                return {
+                    "answer": answer, "notices": [], "sources": sources,
+                    "ai_enabled": True, "ai_failed": False, "no_matches": True,
+                    "answer_type": "web",
+                }
+            except AIServiceError:
+                logger.exception("Web search assistant request failed")
+                return {
+                    "answer": "질문과 관련된 공지는 찾지 못했고, 웹 검색 답변도 가져오지 못했어요. 잠시 후 다시 시도해 주세요.",
+                    "notices": [], "sources": [], "ai_enabled": False,
+                    "ai_failed": True, "no_matches": True, "answer_type": "web",
+                }
         return {
             "answer": "질문과 관련된 공지를 찾지 못했어요. 장학금, 수강, 행사처럼 주제를 조금 더 구체적으로 적어 주세요.",
-            "notices": [], "ai_enabled": False, "ai_failed": False, "no_matches": True,
+            "notices": [], "sources": [], "ai_enabled": False, "ai_failed": False,
+            "no_matches": True, "answer_type": "none",
         }
 
-    configured = is_ai_service_configured()
     ai_enabled = configured
     ai_failed = False
     answer = "관련 공지를 찾았어요. 아래 공지의 제목과 미리보기를 확인해 주세요. 공지를 누르면 상세 내용을 확인할 수 있습니다."
@@ -73,9 +89,11 @@ def ask_notices(
     return {
         "answer": answer,
         "notices": [_public_candidate(item) for item in candidates],
+        "sources": [],
         "ai_enabled": ai_enabled,
         "ai_failed": ai_failed,
         "no_matches": False,
+        "answer_type": "notice",
     }
 
 

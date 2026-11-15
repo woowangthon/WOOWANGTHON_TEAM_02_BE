@@ -77,18 +77,18 @@
   </dialog>
   <dialog class="assistant-dialog" id="assistant-dialog" aria-labelledby="assistant-title">
     <button class="dialog-close" type="button" aria-label="공지 도우미 닫기" data-assistant-close>×</button>
-    <p class="eyebrow">알려줌 공지 도우미</p>
-    <h2 id="assistant-title">공지에 대해 물어보세요.</h2>
-    <p class="assistant-hint">로그인 후 내 학교 공지를 검색할 수 있습니다. 관련 원문은 키 없이도 찾고, AI 설명은 GPT 키 연결 후 활성화됩니다.</p>
+    <p class="eyebrow">알려줌 AI 도우미</p>
+    <h2 id="assistant-title">궁금한 것을 물어보세요.</h2>
+    <p class="assistant-hint">학교 공지 질문은 공지에서, 그 밖의 질문은 웹에서 찾아 답합니다. 사용하려면 로그인해야 합니다.</p>
     <div class="chat-messages" data-chat-messages aria-live="polite"><p class="chat-bubble assistant-bubble">예: 장학금 신청 기한이 언제야?</p></div>
     <form class="chat-form" data-chat-form>
       <label class="sr-only" for="assistant-question">질문 입력</label>
-      <input id="assistant-question" name="question" maxlength="500" minlength="2" placeholder="공지에 대해 질문해 보세요" required>
+      <input id="assistant-question" name="question" maxlength="500" minlength="2" placeholder="공지나 궁금한 내용을 물어보세요" required>
       <button class="primary-button" type="submit">질문하기</button>
     </form>
     <p class="chat-status" data-chat-status role="status"></p>
   </dialog>
 {% endblock %}
 {% block scripts %}
-  <script defer src="/static/js/notices.js?v=20261115-8"></script>
+  <script defer src="/static/js/notices.js?v=20261115-9"></script>
 {% endblock %}

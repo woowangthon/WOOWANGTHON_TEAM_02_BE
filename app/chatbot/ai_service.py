@@ -67,6 +67,24 @@ class AIServiceClient:
             raise AIServiceError("AI 서비스가 빈 답변을 반환했습니다.")
         return answer.strip()
 
+    def answer_with_web_search(self, question: str) -> tuple[str, list[dict[str, str]]]:
+        result = self._post(
+            "/v1/answer", {"question": question, "evidence": [], "web_search": True}
+        )
+        answer = result.get("answer")
+        if not isinstance(answer, str) or not answer.strip():
+            raise AIServiceError("AI 서비스가 빈 답변을 반환했습니다.")
+        raw_sources = result.get("sources", [])
+        sources = [
+            {"title": str(item["title"]), "url": str(item["url"])}
+            for item in raw_sources
+            if isinstance(item, dict)
+            and isinstance(item.get("title"), str)
+            and isinstance(item.get("url"), str)
+            and item["url"].startswith(("https://", "http://"))
+        ] if isinstance(raw_sources, list) else []
+        return answer.strip(), sources[:5]
+
     def summarize(self, candidate: NoticeCandidate) -> str:
         result = self._post("/v1/summarize", {"notice": self._evidence(candidate)})
         summary = result.get("summary")

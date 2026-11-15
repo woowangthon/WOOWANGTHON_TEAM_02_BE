@@ -170,6 +170,9 @@ h2 { margin: 0; color: var(--ink); font-size: 25px; line-height: 1.3; letter-spa
 .chat-notice-result button { border: 0; padding: 0; color: #174c32; background: transparent; text-align: left; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 .chat-notice-result small { color: #849087; font-size: 10px; }
 .chat-notice-result p { margin: 3px 0 0; color: #657168; font-size: 11px; line-height: 1.6; }
+.chat-source-list { display: grid; gap: 5px; align-self: flex-start; max-width: 88%; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 11px; }
+.chat-source-list strong { color: #657168; font-size: 10px; }
+.chat-source-list a { overflow-wrap: anywhere; color: #174c32; }
 
 @media (max-width: 760px) {
   .site-header { min-height: 66px; padding-inline: 16px; }

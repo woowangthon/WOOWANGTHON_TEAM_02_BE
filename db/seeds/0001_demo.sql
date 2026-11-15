@@ -42,7 +42,7 @@ SELECT s.id,
        '데모 공지사항',
        'https://demo-university.invalid/notices',
        '{}'::jsonb,
-       TRUE
+       FALSE
 FROM schools AS s
 WHERE s.name = '우왕톤 데모대학교'
 ON CONFLICT (school_id, list_url) DO UPDATE

@@ -38,9 +38,6 @@ document.addEventListener("click", (event) => {
 });
 
 authCloseButton?.addEventListener("click", () => authDialog?.close());
-authDialog?.addEventListener("click", (event) => {
-  if (event.target === authDialog) authDialog.close();
-});
 
 authTabs.forEach((tab) => {
   tab.addEventListener("click", () => setAuthTab(tab.dataset.authTab));

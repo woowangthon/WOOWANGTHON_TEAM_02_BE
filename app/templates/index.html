@@ -30,6 +30,7 @@
           <button class="feed-tab" id="school-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="school" data-endpoint="/api/notices?per_page=20&amp;scope=school">학교 공지</button>
           <button class="feed-tab" id="department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="department" data-endpoint="/api/notices?per_page=20&amp;scope=department">내 학과</button>
           <button class="feed-tab" id="other-department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="other_department" data-endpoint="/api/notices?per_page=20&amp;scope=other_department">다른 학과 · 지원 가능</button>
+          <button class="feed-tab" id="saved-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="saved" data-endpoint="/api/notices/saved">저장한 공지</button>
         </div>
       </div>
       <div id="notice-list" class="notice-list" role="tabpanel" aria-labelledby="all-tab"></div>
@@ -41,11 +42,11 @@
         <p class="eyebrow">공지 찾기</p>
         <h2>필요한 내용을<br>질문으로 찾아보세요.</h2>
         <p>학교 공지를 근거로 답변하고 원문을 함께 보여드립니다.</p>
-        <button class="assistant-button" type="button" disabled aria-describedby="assistant-status">공지 도우미 열기 <span aria-hidden="true">→</span></button>
-        <span id="assistant-status" class="sr-only">공지 도우미 기능은 아직 준비 중입니다.</span>
+        <button class="assistant-button" type="button" data-assistant-open aria-describedby="assistant-status">공지 도우미 열기 <span aria-hidden="true">→</span></button>
+        <span id="assistant-status" class="sr-only">관련 공지를 찾아 보여드립니다. AI 답변 생성은 GPT 키 설정 후 사용할 수 있습니다.</span>
       </section>
       <section class="sources-card" id="sources" aria-labelledby="sources-title">
-        <p class="eyebrow" id="sources-title">연결된 게시판</p>
+        <p class="eyebrow" id="sources-title">학과 게시판 바로가기</p>
         <ul class="source-list">
           <li><a href="https://www.cbnu.ac.kr/www/selectBbsNttList.do?bbsNo=8&amp;key=814&amp;pageIndex=1&amp;searchCnd=all&amp;searchCtgry=" target="_blank" rel="noopener noreferrer">충북대학교 공식 공지</a></li>
           <li><a href="https://software.cbnu.ac.kr/sub0401" target="_blank" rel="noopener noreferrer">소프트웨어학부 공지</a></li>
@@ -55,7 +56,39 @@
       </section>
     </aside>
   </div>
+
+  <dialog class="notice-dialog" id="notice-dialog" aria-labelledby="notice-dialog-title">
+    <button class="dialog-close" type="button" aria-label="공지 상세 닫기" data-notice-close>×</button>
+    <p class="eyebrow" data-notice-source>공지 상세</p>
+    <h2 id="notice-dialog-title" data-notice-title></h2>
+    <p class="notice-dialog-date" data-notice-date></p>
+    <section class="notice-dialog-summary" aria-labelledby="notice-summary-heading">
+      <p class="eyebrow" id="notice-summary-heading">공지 요약</p>
+      <p data-notice-summary>상세 내용을 불러오는 중입니다.</p>
+      <small data-summary-note>현재는 본문에서 뽑은 임시 요약입니다.</small>
+      <button class="summary-action" type="button" data-ai-summary>AI 요약 만들기</button>
+    </section>
+    <section class="notice-dialog-content" aria-labelledby="notice-content-heading">
+      <h3 id="notice-content-heading">본문</h3>
+      <p class="notice-dialog-placeholder" data-notice-placeholder hidden></p>
+      <div class="notice-dialog-body" data-notice-content></div>
+    </section>
+    <a class="primary-button notice-original-link" data-notice-original target="_blank" rel="noopener noreferrer" hidden>게시판 원문 보기</a>
+  </dialog>
+  <dialog class="assistant-dialog" id="assistant-dialog" aria-labelledby="assistant-title">
+    <button class="dialog-close" type="button" aria-label="공지 도우미 닫기" data-assistant-close>×</button>
+    <p class="eyebrow">알려줌 공지 도우미</p>
+    <h2 id="assistant-title">공지에 대해 물어보세요.</h2>
+    <p class="assistant-hint">로그인 후 내 학교 공지를 검색할 수 있습니다. 관련 원문은 키 없이도 찾고, AI 설명은 GPT 키 연결 후 활성화됩니다.</p>
+    <div class="chat-messages" data-chat-messages aria-live="polite"><p class="chat-bubble assistant-bubble">예: 장학금 신청 기한이 언제야?</p></div>
+    <form class="chat-form" data-chat-form>
+      <label class="sr-only" for="assistant-question">질문 입력</label>
+      <input id="assistant-question" name="question" maxlength="500" minlength="2" placeholder="공지에 대해 질문해 보세요" required>
+      <button class="primary-button" type="submit">질문하기</button>
+    </form>
+    <p class="chat-status" data-chat-status role="status"></p>
+  </dialog>
 {% endblock %}
 {% block scripts %}
-  <script defer src="/static/js/notices.js"></script>
+  <script defer src="/static/js/notices.js?v=20261115-8"></script>
 {% endblock %}

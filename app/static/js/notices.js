@@ -5,6 +5,20 @@ const tabs = [...document.querySelectorAll(".feed-tab")];
 const todayDate = document.querySelector("#today-date");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const mobileMenu = document.querySelector("[data-mobile-menu]");
+const noticeDialog = document.querySelector("#notice-dialog");
+const noticeDialogSource = noticeDialog?.querySelector("[data-notice-source]");
+const noticeDialogTitle = noticeDialog?.querySelector("[data-notice-title]");
+const noticeDialogDate = noticeDialog?.querySelector("[data-notice-date]");
+const noticeDialogSummary = noticeDialog?.querySelector("[data-notice-summary]");
+const noticeDialogContent = noticeDialog?.querySelector("[data-notice-content]");
+const noticeDialogPlaceholder = noticeDialog?.querySelector("[data-notice-placeholder]");
+const noticeDialogOriginal = noticeDialog?.querySelector("[data-notice-original]");
+const summaryNote = noticeDialog?.querySelector("[data-summary-note]");
+const summaryButton = noticeDialog?.querySelector("[data-ai-summary]");
+const assistantDialog = document.querySelector("#assistant-dialog");
+const chatMessages = assistantDialog?.querySelector("[data-chat-messages]");
+const chatStatus = assistantDialog?.querySelector("[data-chat-status]");
+let activeNoticeId = null;
 
 let activeView = "all";
 let notices = [];
@@ -54,6 +68,8 @@ function showLoginRequired() {
   description.textContent =
     activeView === "recommended"
       ? "학교, 학과·학부, 학년과 관심 분야를 기준으로 맞춤 공지를 보여드립니다."
+      : activeView === "saved"
+        ? "저장한 공지를 모아보려면 로그인해 주세요."
       : "내 학교의 공지 목록을 확인하려면 로그인해 주세요.";
 
   const link = document.createElement("button");
@@ -72,6 +88,135 @@ function formatDate(value) {
   if (Number.isNaN(date.getTime())) return "게시일 미상";
   return new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium" }).format(date);
 }
+
+async function openNoticeDetail(item) {
+  if (!noticeDialog || !noticeDialogTitle) return;
+  activeNoticeId = item.id;
+  noticeDialogSource.textContent = item.source_name || "충북대학교 공지";
+  noticeDialogTitle.textContent = item.title || "제목 없음";
+  noticeDialogDate.textContent = formatDate(item.posted_at);
+  noticeDialogSummary.textContent = "상세 내용을 불러오는 중입니다.";
+  noticeDialogContent.replaceChildren();
+  noticeDialogPlaceholder.hidden = true;
+  noticeDialogOriginal.hidden = true;
+  noticeDialog.showModal();
+
+  try {
+    const response = await fetch(`/api/notices/${encodeURIComponent(item.id)}`, {
+      headers: { Accept: "application/json" },
+      credentials: "same-origin",
+    });
+    if (!response.ok) throw new Error("notice_detail_failed");
+    const detail = await response.json();
+    const body = (detail.content || "").trim();
+    const interimSummary = (detail.summary || "").trim();
+
+    noticeDialogSummary.textContent = interimSummary
+      || (body ? `${body.slice(0, 260)}${body.length > 260 ? "…" : ""}` : "상세 내용을 제공하지 않는 게시판입니다.");
+    summaryNote.textContent = "현재는 본문에서 뽑은 임시 요약입니다.";
+    if (body) {
+      noticeDialogContent.textContent = body;
+    } else {
+      noticeDialogPlaceholder.hidden = false;
+      noticeDialogPlaceholder.textContent = "이 게시판은 제목과 날짜만 공개하고 있습니다. 자세한 내용은 게시판 원문에서 확인해 주세요.";
+    }
+
+    try {
+      const original = new URL(detail.original_url);
+      if (["http:", "https:"].includes(original.protocol)) {
+        noticeDialogOriginal.href = original.href;
+        noticeDialogOriginal.hidden = false;
+      }
+    } catch {
+      noticeDialogOriginal.hidden = true;
+    }
+  } catch {
+    noticeDialogSummary.textContent = "상세 내용을 불러오지 못했습니다. 게시판 원문에서 확인해 주세요.";
+  }
+}
+
+summaryButton?.addEventListener("click", async () => {
+  if (!activeNoticeId) return;
+  summaryButton.disabled = true;
+  summaryButton.textContent = "AI 요약을 만드는 중…";
+  try {
+    const response = await fetch(`/api/assistant/notices/${encodeURIComponent(activeNoticeId)}/summary`, {
+      method: "POST", credentials: "same-origin", headers: { Accept: "application/json" },
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || "AI 요약을 만들지 못했습니다.");
+    noticeDialogSummary.textContent = data.summary;
+    summaryNote.textContent = "공지 본문을 바탕으로 만든 AI 요약입니다.";
+  } catch (error) {
+    summaryNote.textContent = error.message || "AI 요약을 만들지 못했습니다.";
+  } finally {
+    summaryButton.disabled = false;
+    summaryButton.textContent = "AI 요약 다시 만들기";
+  }
+});
+
+function appendChatMessage(text, kind = "assistant") {
+  const bubble = document.createElement("p");
+  bubble.className = `chat-bubble ${kind === "user" ? "user-bubble" : "assistant-bubble"}`;
+  bubble.textContent = text;
+  chatMessages.append(bubble);
+  bubble.scrollIntoView({ block: "nearest" });
+  return bubble;
+}
+
+document.querySelector("[data-assistant-open]")?.addEventListener("click", () => {
+  assistantDialog?.showModal();
+  assistantDialog?.querySelector("#assistant-question")?.focus();
+});
+assistantDialog?.querySelector("[data-assistant-close]")?.addEventListener("click", () => assistantDialog.close());
+assistantDialog?.querySelector("[data-chat-form]")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const input = event.currentTarget.elements.question;
+  const question = input.value.trim();
+  if (!question) return;
+  appendChatMessage(question, "user");
+  input.value = "";
+  chatStatus.textContent = "관련 공지를 찾고 있습니다.";
+  const pending = appendChatMessage("관련 공지를 찾고 있어요…");
+  try {
+    const response = await fetch("/api/assistant/chat", {
+      method: "POST", credentials: "same-origin",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (response.status === 401) throw new Error("로그인 후 공지 도우미를 사용할 수 있습니다.");
+    if (!response.ok) throw new Error(data.detail || "질문을 처리하지 못했습니다.");
+    pending.textContent = data.answer;
+    (data.notices || []).forEach((notice) => {
+      const result = document.createElement("article");
+      result.className = "chat-notice-result";
+      const title = document.createElement("button");
+      title.type = "button";
+      title.textContent = notice.title;
+      title.addEventListener("click", () => openNoticeDetail(notice));
+      const meta = document.createElement("small");
+      meta.textContent = `${notice.source_name || "공지"}${notice.posted_at ? ` · ${formatDate(notice.posted_at)}` : ""}`;
+      result.append(title, meta);
+      if (notice.preview) {
+        const preview = document.createElement("p");
+        preview.textContent = notice.preview;
+        result.append(preview);
+      }
+      chatMessages.append(result);
+    });
+    chatStatus.textContent = data.ai_enabled
+      ? "공지 내용을 근거로 답변했습니다."
+      : data.no_matches
+        ? "질문과 관련된 공지를 찾지 못했습니다."
+      : data.ai_failed
+        ? "AI 응답에 실패했습니다. API 키와 모델 설정을 확인해 주세요."
+        : "공지 검색 결과입니다. AI API 키를 설정하면 답변을 받을 수 있습니다.";
+  } catch (error) {
+    pending.textContent = error.message || "잠시 후 다시 시도해 주세요.";
+    chatStatus.textContent = "";
+  }
+});
 
 function makeNoticeCard(item) {
   const card = document.createElement("article");
@@ -93,6 +238,42 @@ function makeNoticeCard(item) {
   source.textContent = item.source_name || "충북대학교";
   meta.append(source);
 
+  const saveButton = document.createElement("button");
+  saveButton.className = "save-notice-button";
+  saveButton.type = "button";
+  saveButton.setAttribute("aria-pressed", String(Boolean(item.is_saved)));
+  saveButton.textContent = item.is_saved ? "저장됨" : "저장";
+  saveButton.addEventListener("click", async () => {
+    const wasSaved = Boolean(item.is_saved);
+    saveButton.disabled = true;
+    try {
+      const response = await fetch(`/api/notices/${encodeURIComponent(item.id)}/saved`, {
+        method: wasSaved ? "DELETE" : "PUT",
+        credentials: "same-origin",
+        headers: { Accept: "application/json" },
+      });
+      if (response.status === 401) {
+        document.querySelector("[data-auth-open]")?.click();
+        statusNode.textContent = "저장하려면 로그인해 주세요.";
+        return;
+      }
+      if (!response.ok) throw new Error("저장 상태를 변경하지 못했습니다.");
+      item.is_saved = !wasSaved;
+      saveButton.setAttribute("aria-pressed", String(item.is_saved));
+      saveButton.textContent = item.is_saved ? "저장됨" : "저장";
+      statusNode.textContent = item.is_saved ? "공지를 저장했습니다." : "저장을 해제했습니다.";
+      if (activeView === "saved" && wasSaved) {
+        const savedTab = tabs.find((tab) => tab.dataset.view === "saved");
+        if (savedTab) await loadNotices(savedTab);
+      }
+    } catch (error) {
+      statusNode.textContent = error.message || "저장 상태를 변경하지 못했습니다.";
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+  meta.append(saveButton);
+
   if (item.category_name) {
     const category = document.createElement("span");
     category.className = "category-pill";
@@ -100,19 +281,21 @@ function makeNoticeCard(item) {
     meta.append(category);
   }
 
-  const title = document.createElement("a");
-  title.className = "notice-title";
-  title.textContent = item.title || "제목 없음";
-  try {
-    const original = new URL(item.original_url);
-    if (["http:", "https:"].includes(original.protocol)) {
-      title.href = original.href;
-      title.target = "_blank";
-      title.rel = "noopener noreferrer";
-    }
-  } catch {
-    title.removeAttribute("href");
+  if (Array.isArray(item.tags)) {
+    item.tags.forEach((tagName) => {
+      const tag = document.createElement("span");
+      tag.className = "topic-tag";
+      tag.textContent = tagName;
+      meta.append(tag);
+    });
   }
+
+  const title = document.createElement("button");
+  title.className = "notice-title";
+  title.type = "button";
+  title.textContent = item.title || "제목 없음";
+  title.setAttribute("aria-label", `${title.textContent} 상세 보기`);
+  title.addEventListener("click", () => openNoticeDetail(item));
 
   const summaryText = item.summary || item.preview || "";
   const summary = document.createElement("p");
@@ -138,6 +321,8 @@ function makeNoticeCard(item) {
   return card;
 }
 
+noticeDialog?.querySelector("[data-notice-close]")?.addEventListener("click", () => noticeDialog.close());
+
 function renderNotices() {
   const query = searchInput.value.trim().toLocaleLowerCase("ko-KR");
   const filtered = query
@@ -153,6 +338,10 @@ function renderNotices() {
       showMessage(`‘${searchInput.value.trim()}’ 검색 결과가 없습니다.`);
     } else if (activeView === "recommended") {
       showMessage("표시할 맞춤 공지가 없습니다.", "empty-state", "관심 분야와 대상이 맞는 공지가 등록되면 여기에 표시됩니다.");
+    } else if (activeView === "other_department") {
+      showMessage("지원 가능한 다른 학과 공지가 없습니다.", "empty-state", "다른 학과 공지 중 내 학과나 학년에 해당하는 공지가 있으면 여기에 표시됩니다.");
+    } else if (activeView === "saved") {
+      showMessage("저장한 공지가 없습니다.", "empty-state", "관심 있는 공지의 저장 버튼을 눌러 여기에 모아보세요.");
     } else {
       showMessage("표시할 공지가 없습니다.", "empty-state", "연결된 게시판에서 공지를 불러오면 여기에 표시됩니다.");
     }
@@ -170,8 +359,10 @@ async function loadNotices(tab) {
   const viewNames = {
     all: "전체",
     school: "학교",
-    department: "학과",
+    department: "내 학과",
+    other_department: "지원 가능한 다른 학과",
     recommended: "맞춤",
+    saved: "저장한",
   };
   statusNode.textContent = `${viewNames[activeView] || "전체"} 공지를 불러오는 중입니다.`;
 
@@ -222,16 +413,6 @@ document.querySelectorAll("[data-view-link]").forEach((link) => {
       event.preventDefault();
       if (tab) {
         selectTab(tab);
-      } else if (link.dataset.viewLink === "saved") {
-        requestController?.abort();
-        activeView = "saved";
-        tabs.forEach((item) => {
-          item.classList.remove("active");
-          item.setAttribute("aria-selected", "false");
-          item.tabIndex = -1;
-        });
-        statusNode.textContent = "저장한 공지";
-        showMessage("저장한 공지가 없습니다.", "empty-state", "공지 저장 기능은 준비 중입니다.");
       } else {
         return;
       }
@@ -262,4 +443,6 @@ tabs.forEach((tab, index) => {
 });
 
 searchInput.addEventListener("input", renderNotices);
-loadNotices(tabs[0]);
+// Load the tab marked active in the page; the first tab is personalized,
+// while the initial visual selection is the all notices tab.
+loadNotices(tabs.find((tab) => tab.classList.contains("active")) || tabs[0]);

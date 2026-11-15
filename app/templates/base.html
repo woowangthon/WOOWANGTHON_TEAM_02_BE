@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
+  <link rel="stylesheet" href="/static/css/app.css">
 </head>
 <body {% block body_attributes %}{% endblock %}>
   <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
@@ -109,8 +109,8 @@
     </section>
   </dialog>
 
-  <script defer src="{{ url_for('static', path='/js/auth.js') }}"></script>
-  <script defer src="{{ url_for('static', path='/js/auth-modal.js') }}"></script>
+  <script defer src="/static/js/auth.js"></script>
+  <script defer src="/static/js/auth-modal.js"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

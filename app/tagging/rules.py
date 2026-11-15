@@ -7,6 +7,9 @@ import re
 from psycopg import Connection
 
 GRADE_PATTERN = re.compile(r"(?<!\d)([1-6])\s*학년")
+ALL_DEPARTMENTS_PATTERN = re.compile(
+    r"(?:전체|전|모든)\s*학과|타\s*학과|타학과|전교생|재학생\s*전체"
+)
 
 
 def retag_notice(
@@ -15,9 +18,14 @@ def retag_notice(
     school_id: int,
     text: str,
     target_department_name: str | None = None,
+    title: str | None = None,
 ) -> None:
     """공지의 기존 규칙 태그·대상을 지우고 현재 텍스트 기준으로 다시 만든다."""
     corpus = text.casefold()
+    title_corpus = (title or "").casefold()
+    scholarship_title = any(
+        marker in title_corpus for marker in ("장학", "장학생", "장학금")
+    )
     connection.execute(
         "DELETE FROM notice_tags WHERE notice_id = %s AND origin = 'rule'",
         (notice_id,),
@@ -29,14 +37,21 @@ def retag_notice(
 
     keyword_rows = connection.execute(
         """
-        SELECT t.id, k.keyword
+        SELECT t.id, t.code, k.keyword
         FROM tags AS t
         JOIN tag_keywords AS k ON k.tag_id = t.id
         WHERE t.is_active
         """
     ).fetchall()
     matched_tag_ids = {
-        tag_id for tag_id, keyword in keyword_rows if keyword.casefold() in corpus
+        tag_id
+        for tag_id, code, keyword in keyword_rows
+        if keyword.casefold() in corpus
+        and not (
+            code == "contest"
+            and scholarship_title
+            and keyword.casefold() not in title_corpus
+        )
     }
     if matched_tag_ids:
         with connection.cursor() as cursor:
@@ -58,14 +73,10 @@ def retag_notice(
         for department_id, name in department_rows
         if name and name.casefold() in corpus
     }
-    if target_department_name:
-        matched_department_ids.update(
-            row[0]
-            for row in connection.execute(
-                "SELECT id FROM departments WHERE school_id = %s AND name = %s",
-                (school_id, target_department_name),
-            ).fetchall()
-        )
+    if ALL_DEPARTMENTS_PATTERN.search(corpus):
+        matched_department_ids.update(department_id for department_id, _ in department_rows)
+    # A source's department is its origin, not the notice's eligibility.
+    # Only names actually present in the notice body/title become audience tags.
     if matched_department_ids:
         with connection.cursor() as cursor:
             cursor.executemany(

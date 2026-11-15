@@ -91,15 +91,23 @@ def parse_notice_list(
     link_selector = parser_config.get("link_selector")
     date_selector = parser_config.get("date_selector")
     title_selector = parser_config.get("title_selector") or link_selector
-    required_selectors = (item_selector, link_selector, date_selector)
+    date_from_ancestor = parser_config.get("date_from_ancestor") is True
+    required_selectors = (item_selector, link_selector)
     if not all(isinstance(value, str) and value.strip() for value in required_selectors):
-        raise ParseError("item_selector, link_selector, date_selector를 설정해야 합니다.")
+        raise ParseError("item_selector, link_selector를 설정해야 합니다.")
+    if not date_from_ancestor and not (isinstance(date_selector, str) and date_selector.strip()):
+        raise ParseError("date_selector 또는 date_from_ancestor를 설정해야 합니다.")
 
     soup = BeautifulSoup(html, "html.parser")
     try:
         items = soup.select(item_selector)
     except Exception as exc:
         raise ParseError("잘못된 CSS selector: item_selector") from exc
+    item_limit = parser_config.get("item_limit")
+    if item_limit is not None:
+        if isinstance(item_limit, bool) or not isinstance(item_limit, int) or item_limit < 1:
+            raise ParseError("item_limit은 1 이상의 정수여야 합니다.")
+        items = items[:item_limit]
     if not items:
         raise ParseError("item_selector와 일치하는 공지 행이 없습니다.")
 
@@ -114,8 +122,8 @@ def parse_notice_list(
     for index, item in enumerate(items, start=1):
         link = _select_one(item, link_selector, "link_selector")
         title_node = _select_one(item, title_selector, "title_selector")
-        date_node = _select_one(item, date_selector, "date_selector")
-        if link is None or title_node is None or date_node is None:
+        date_node = _select_one(item, date_selector, "date_selector") if date_selector else None
+        if link is None or title_node is None or (date_node is None and not date_from_ancestor):
             raise ParseError(f"{index}번째 공지에서 제목·링크·게시일을 찾지 못했습니다.")
 
         title = _clean_text(title_node.get_text(" ", strip=True))
@@ -144,9 +152,22 @@ def parse_notice_list(
         if not valid_http_url:
             raise ParseError(f"{index}번째 공지의 원문 링크가 올바른 HTTP URL이 아닙니다.")
 
-        date_value = date_node.get(date_attribute) if date_attribute else None
+        date_value = date_node.get(date_attribute) if date_node is not None and date_attribute else None
         if not isinstance(date_value, str) or not date_value.strip():
-            date_value = date_node.get_text(" ", strip=True)
+            date_value = date_node.get_text(" ", strip=True) if date_node is not None else ""
+        if date_from_ancestor and not date_value:
+            ancestor = item.parent
+            for _ in range(4):
+                if not isinstance(ancestor, Tag):
+                    break
+                match = re.search(
+                    r"\b\d{4}\s*[./-]\s*\d{1,2}\s*[./-]\s*\d{1,2}\.?",
+                    ancestor.get_text(" ", strip=True),
+                )
+                if match:
+                    date_value = re.sub(r"\s*([./-])\s*", r"\1", match.group(0))
+                    break
+                ancestor = ancestor.parent
         try:
             posted_at = _posted_at(date_value)
         except ParseError as exc:

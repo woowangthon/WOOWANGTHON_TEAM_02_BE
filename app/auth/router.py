@@ -302,9 +302,67 @@ def get_current_user(
 @router.get("/me", name="profile")
 def profile(
     request: Request,
+    pool: Annotated[ConnectionPool, Depends(_pool)],
     user: Annotated[dict[str, Any], Depends(get_current_user)],
 ) -> Any:
-    return _render(request, "profile.html", {"user": user})
+    with pool.connection() as conn:
+        tags = conn.execute(
+            "SELECT id, name FROM tags WHERE is_active AND is_user_selectable ORDER BY sort_order, name"
+        ).fetchall()
+        selected_ids = {
+            row[0]
+            for row in conn.execute(
+                "SELECT tag_id FROM user_interests WHERE user_id = %s", (user["id"],)
+            ).fetchall()
+        }
+    return _render(
+        request,
+        "profile.html",
+        {"user": user, "tags": tags, "selected_interest_ids": selected_ids},
+    )
+
+
+@router.post("/me/preferences", name="update_preferences")
+def update_preferences(
+    request: Request,
+    pool: Annotated[ConnectionPool, Depends(_pool)],
+    user: Annotated[dict[str, Any], Depends(get_current_user)],
+    interest_ids: Annotated[list[int] | None, Form()] = None,
+) -> Any:
+    """Save the signed-in user's selectable notice interests."""
+    selected_ids = set(interest_ids or [])
+    with pool.connection() as conn:
+        valid_ids = {
+            row[0]
+            for row in conn.execute(
+                "SELECT id FROM tags WHERE id = ANY(%s) AND is_active AND is_user_selectable",
+                (list(selected_ids),),
+            ).fetchall()
+        }
+        tags = conn.execute(
+            "SELECT id, name FROM tags WHERE is_active AND is_user_selectable ORDER BY sort_order, name"
+        ).fetchall()
+        if valid_ids != selected_ids:
+            return _render(
+                request,
+                "profile.html",
+                {
+                    "user": user,
+                    "tags": tags,
+                    "selected_interest_ids": selected_ids & valid_ids,
+                    "preferences_error": "선택한 관심 분야를 확인해 주세요.",
+                },
+                status.HTTP_400_BAD_REQUEST,
+            )
+        with conn.transaction():
+            conn.execute("DELETE FROM user_interests WHERE user_id = %s", (user["id"],))
+            if selected_ids:
+                with conn.cursor() as cursor:
+                    cursor.executemany(
+                        "INSERT INTO user_interests (user_id, tag_id) VALUES (%s, %s)",
+                        [(user["id"], tag_id) for tag_id in sorted(selected_ids)],
+                    )
+    return RedirectResponse(url="/me?saved=1", status_code=status.HTTP_303_SEE_OTHER)
 
 
 @router.post("/logout", name="logout")

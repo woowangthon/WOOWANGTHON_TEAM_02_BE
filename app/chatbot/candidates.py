@@ -39,7 +39,7 @@ WITH input AS (
     CROSS JOIN input
     WHERE n.status = 'active'
       AND (
-          n.title % input.question OR n.content % input.question
+          n.title %% input.question OR n.content %% input.question
           OR position(lower(input.question) IN lower(n.title)) > 0
           OR position(lower(input.question) IN lower(n.content)) > 0
       )

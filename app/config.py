@@ -27,9 +27,9 @@ def get_settings() -> Settings:
             "postgresql://notice_notifier:local_dev_only@localhost:5432/notice_notifier",
         ),
         jwt_secret=os.environ.get("JWT_SECRET", ""),
-        llm_provider=os.environ.get("LLM_PROVIDER", "anthropic"),
+        llm_provider=os.environ.get("LLM_PROVIDER", "google"),
         llm_api_key=os.environ.get("LLM_API_KEY") or None,
-        llm_model=os.environ.get("LLM_MODEL", "claude-haiku-5-5"),
+        llm_model=os.environ.get("LLM_MODEL", "gemini-2.5-flash-lite"),
         llm_base_url=os.environ.get("LLM_BASE_URL") or None,
         cookie_secure=os.environ.get("COOKIE_SECURE", "true").lower() == "true",
     )

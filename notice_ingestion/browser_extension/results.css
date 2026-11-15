@@ -1,0 +1,15 @@
+:root { color-scheme: light; font-family: "Malgun Gothic", "Noto Sans KR", sans-serif; }
+body { margin: 0; padding: 48px 18px; color: #20362b; background: #f5f4ef; }
+.card { box-sizing: border-box; max-width: 720px; margin: 0 auto; border: 1px solid #e0e3dd; border-radius: 14px; padding: 30px; background: #fff; box-shadow: 0 12px 36px #183d2a12; }
+.eyebrow { margin: 0 0 8px; color: #df6d42; font-size: 13px; font-weight: 700; }
+h1 { margin: 0; font-size: 27px; }
+.summary { margin: 18px 0 5px; font-size: 18px; font-weight: 700; }
+.meta { margin: 0 0 18px; color: #758078; font-size: 13px; }
+.notices { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.notice { display: flex; justify-content: space-between; gap: 20px; border: 1px solid #e2e7e2; border-radius: 9px; padding: 14px; }
+.notice-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.5; }
+.notice-meta { margin: 5px 0 0; color: #758078; font-size: 12px; }
+a { align-self: center; flex: 0 0 auto; color: #185438; font-size: 13px; font-weight: 700; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.footnote { margin: 24px 0 0; border-top: 1px solid #edf0ec; padding-top: 14px; color: #758078; font-size: 12px; }
+@media (max-width: 560px) { body { padding: 18px 10px; } .card { padding: 20px; } .notice { display: block; } a { display: inline-block; margin-top: 10px; } }

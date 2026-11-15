@@ -30,12 +30,17 @@ WITH RECURSIVE me AS (
     SELECT n.id, n.source_id, n.category_id, n.title, n.content, n.posted_at,
            n.original_url, s.name AS source_name,
            c.name AS category_name,
-           EXISTS (
-               SELECT 1 FROM notice_targets AS target
-               JOIN me ON target.grade IS NULL OR target.grade = me.grade
-               WHERE target.notice_id = n.id
-                 AND target.department_id IN (SELECT id FROM my_depts)
-           ) AS department_match,
+           COALESCE((
+               EXISTS (
+                   SELECT 1 FROM notice_targets AS target
+                   JOIN me ON target.grade IS NULL OR target.grade = me.grade
+                   WHERE target.notice_id = n.id
+                     AND target.department_id IN (SELECT id FROM my_depts)
+               )
+               OR s.parser_config->>'target_department_name' = (
+                   SELECT d.name FROM me JOIN departments AS d ON d.id = me.department_id
+               )
+           ), FALSE) AS department_match,
            EXISTS (
                SELECT 1 FROM notice_targets AS target
                JOIN me ON target.grade = me.grade
@@ -47,7 +52,8 @@ WITH RECURSIVE me AS (
                SELECT array_agg(tag.name ORDER BY tag.sort_order, tag.name)
                FROM notice_tags AS notice_tag
                JOIN user_interests AS interest
-                 ON interest.tag_id = notice_tag.tag_id AND interest.user_id = %s
+                 ON interest.tag_id = notice_tag.tag_id
+               JOIN me ON me.id = interest.user_id
                JOIN tags AS tag ON tag.id = notice_tag.tag_id
                WHERE notice_tag.notice_id = n.id
            ), ARRAY[]::text[]) AS matched_interests
@@ -59,6 +65,9 @@ WITH RECURSIVE me AS (
       AND (
           NOT EXISTS (
               SELECT 1 FROM notice_targets AS target WHERE target.notice_id = n.id
+          ) AND COALESCE(s.parser_config->>'source_scope', 'school') = 'school'
+          OR s.parser_config->>'target_department_name' = (
+              SELECT d.name FROM me JOIN departments AS d ON d.id = me.department_id
           )
           OR EXISTS (
               SELECT 1 FROM notice_targets AS target
@@ -67,6 +76,14 @@ WITH RECURSIVE me AS (
                      OR target.department_id IN (SELECT id FROM my_depts))
                 AND (target.grade IS NULL OR target.grade = me.grade)
           )
+          OR EXISTS (
+              SELECT 1
+              FROM notice_tags AS notice_tag
+              JOIN user_interests AS interest
+                ON interest.tag_id = notice_tag.tag_id
+              JOIN me ON me.id = interest.user_id
+              WHERE notice_tag.notice_id = n.id
+          )
       )
 )
 SELECT id, title, posted_at, category_id, category_name,
@@ -74,7 +91,18 @@ SELECT id, title, posted_at, category_id, category_name,
        (3 * department_match::int
         + 2 * grade_match::int
         + 2 * cardinality(matched_interests)) AS score,
-       matched_interests, department_match, grade_match
+       matched_interests, department_match, grade_match,
+       COALESCE((
+           SELECT array_agg(tag.name ORDER BY tag.sort_order, tag.name)
+           FROM notice_tags AS notice_tag
+           JOIN tags AS tag ON tag.id = notice_tag.tag_id AND tag.is_active
+           WHERE notice_tag.notice_id = eligible.id
+       ), ARRAY[]::text[]) AS tags,
+       EXISTS (
+           SELECT 1 FROM user_saved_notices AS saved
+           WHERE saved.notice_id = eligible.id
+             AND saved.user_id = (SELECT id FROM me)
+       ) AS is_saved
 FROM eligible
 ORDER BY score DESC, posted_at DESC, id DESC
 LIMIT %s
@@ -94,7 +122,7 @@ def recommended_notices(
     with pool.connection() as connection:
         rows = connection.execute(
             RECOMMENDATIONS_SQL,
-            (user["id"], user["id"], PREVIEW_LENGTH, RECOMMENDATION_LIMIT),
+            (user["id"], PREVIEW_LENGTH, RECOMMENDATION_LIMIT),
         ).fetchall()
 
     items = []
@@ -119,6 +147,8 @@ def recommended_notices(
                 "score": row[8],
                 "matched_interests": row[9],
                 "reasons": reasons or ["전체 공개 공지"],
+                "tags": row[12],
+                "is_saved": row[13],
             }
         )
     return {"items": items, "limit": RECOMMENDATION_LIMIT}

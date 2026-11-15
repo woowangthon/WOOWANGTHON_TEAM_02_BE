@@ -1,0 +1,730 @@
+<HTML>
+
+<head>
+<title></title>
+<meta http-equiv="content-Type" content="text/html; charset=euc-kr">
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+
+
+
+
+<link rel="stylesheet" href="/siteSkin/default/css/sub.css">
+<link rel="stylesheet" href="/siteSkin/default/css/gray.css"><!-- 게시판 -->
+<link rel="stylesheet" href="/siteSkin/default/css/btn.css" type="text/css"><!-- css버튼 -->
+<script language="javascript" src="/script/default.js"></script>
+<script language="javascript" src="/script/flashOB.js" nonce="691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061"></script>
+<script language="javascript" src="/script/default.js" nonce="691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061"></script>
+<script language="javascript" src="/script/rolling_banner.js" nonce="691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061"></script>
+<!-- png 투명처리 -->
+<script nonce="691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061">   
+function setPng24(obj)  
+{  
+    obj.width=obj.height=1;  
+    obj.className=obj.className.replace(/\bpng24\b/i,'');  
+    obj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ obj.src +"',sizingMethod='image');"  
+    obj.src='';   
+    return '';  
+}  
+
+function toCyberpage(f){
+  if(f=="pdsetc")
+	{
+		window.open("../schSystem/index.php?mode=pdsetc","viewMem","width=1000,height=700,scrollbars=yes,left=100,top=100");
+	} else {
+		window.open("../schSystem/index.php?mode=cyberpage&userID="+f,"viewMem","width=1000,height=700,scrollbars=yes,left=100,top=100");
+	}
+}
+</script> 
+</head>
+
+<body  onload="window.setInterval('FloatMenu()', 1);">
+<!-- 스킵네비게이션 -->
+<div id="accessibility">
+	<ul>
+		<li><a href="#gnb">주메뉴 바로가기</a></li>
+		<li><a href="#subContent">콘텐츠 바로가기</a></li>
+	</ul>
+</div>
+<hr>
+<!-- //스킵네비게이션 -->
+
+
+<div id="wrap">
+	<div id="header">
+		<img src="/siteSkin/default/images/header/koamma_crt.png" alt="우앙" class="koamma_crt">
+		<h1><a href="/" ><img src="/siteSkin/default/images/header/logo.gif" alt="충북대학교 전기공학부"></a></h1>
+
+		<!-- 상단 글로벌메뉴 시작 -->
+		<ul class="lnb">
+			<li><a href="/" >홈</a></li>
+						<li><a href="/member/login.php?moveUrl=%2Fbbs%2Fbbs.php%3Ftask%3Dview%26db%3Dnotice%26no%3D4396%26category%3D0" >로그인</a>
+			<!--li><a href="/member/regist.php" >회원가입</a></li-->
+						<!-- <li><a href="/member/sitemap.php" >사이트맵</a></li> -->
+			<li><a href="/english/" >English</a></li>
+					</ul>
+		<!-- //상단 글로벌메뉴 끝 -->
+
+
+		<div id="gnb">
+		<table cellpadding='0' cellspacing='0' ><tr><span onmouseover="MM_showHideLayers('menu01','','show','menu02','','hide','menu03','','hide','menu04','','hide','menu05','','hide','menu06','','hide','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID12415887001' class='mainmenu_link'>학부소개</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','show','menu03','','hide','menu04','','hide','menu05','','hide','menu06','','hide','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID12415887531' class='mainmenu_link'>학사정보</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','show','menu04','','hide','menu05','','hide','menu06','','hide','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID13348804451' class='mainmenu_link'>ABEEK</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','hide','menu04','','show','menu05','','hide','menu06','','hide','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID12586104021' class='mainmenu_link'>대학원</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','hide','menu04','','hide','menu05','','show','menu06','','hide','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID12586106351' class='mainmenu_link'>대학생활</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','hide','menu04','','hide','menu05','','hide','menu06','','show','menu07','','hide','menu08','','hide')" style='cursor:hand' class='mainmenu_on'><a href='/bbs/bbs.php?db=notice&pgID=ID12415888101' class='mainmenu_link'>커뮤니티</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','hide','menu04','','hide','menu05','','hide','menu06','','hide','menu07','','show','menu08','','hide')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID14125681071' class='mainmenu_link'>입학안내</a></span><span onmouseover="MM_showHideLayers('menu01','','hide','menu02','','hide','menu03','','hide','menu04','','hide','menu05','','hide','menu06','','hide','menu07','','hide','menu08','','show')" style='cursor:hand' class='mainmenu_off'><a href='/include/contents.php?pgID=ID14573970393' class='mainmenu_link'>특성화교육</a></span></tr></table><div id='menu01' style='height:35px; position:absolute; padding-left:00px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12415887001'>학부소개 및 비전</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/subPage.php?pgID=ID15044861392'>교수소개</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12415887261'>학과연혁</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/subPage.php?pgID=ID12415887341'>찾아오시는길</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID14258692461'>교육목표 및 추진전략</a></td></tr></table></div><div id='menu02' style='height:35px; position:absolute; padding-left:30px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12415887531'>교과목개요</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586103361'>학부선수과목</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/modules.php?pgID=ID12415887691'>학사일정</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID15833654751'>교육과정</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID15833654891'>졸업이수기준학점</a></td></tr></table></div><div id='menu03' style='height:35px; position:absolute; padding-left:00px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID13348804451'>교육목표 및 학습성과</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID13348804601'>전기공학부 운영내규</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID13348804731'>공학인증프로그램가이드</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID13348804901'>공학인증 표준이수 모형</a></td></tr></table></div><div id='menu04' style='height:35px; position:absolute; padding-left:220px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586104021'>교육과정</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586104181'>대학원입학정보</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/bbs/bbs.php?db=grpds&pgID=ID12586104761'>대학원자료실</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586105501'>연구실</a></td></tr></table></div><div id='menu05' style='height:35px; position:absolute; padding-left:430px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586106351'>연구/학습동아리</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12586106491'>학생회</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID12598073021'>재학생 안내</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID16406753431'>수상실적(교외)</a></td></tr></table></div><div id='menu06' style='height:35px; position:absolute; padding-left:500px; margin-top:35px; z-index:1; visibility:show'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu_here' valign='center'>
+							<a href='/bbs/bbs.php?db=notice&pgID=ID12415888101'>공지&뉴스</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/bbs/bbs.php?db=recruit&pgID=ID12415888181'>취업정보</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/bbs/bbs.php?db=gallery&pgID=ID12415888391'>행사갤러리</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/bbs/bbs.php?db=lnik&pgID=ID12415888581'>관련사이트</a></td></tr></table></div><div id='menu07' style='height:35px; position:absolute; padding-left:680px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID14125681071'>충북대 입학정보</a></td></tr></table></div><div id='menu08' style='height:35px; position:absolute; padding-left:780px; margin-top:35px; z-index:1; visibility:hidden'><table cellpadding='7' cellspacing='0' ><tr><td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID14573970393'>산학맞춤형교육</a></td> <td nowrap class='layer_submenu' valign='center'>
+							<a href='/include/contents.php?pgID=ID16407369641'>인턴쉽</a></td></tr></table></div>		</div>
+
+		<style>
+			#gnb{margin:0 auto;}
+			
+			#gnb span{float:left;}
+			.mainmenu_link {
+				display: block;
+				font-size: 18px;
+				font-family: "Trebuchet MS","Lucida Grande","Tahoma","Helvetica","Arial",sans-serif;
+				padding: 5px 23px;
+				color:#fff;	    
+			}
+
+			a.mainmenu_link:link, a.mainmenu_link:visited{color:#fff;text-decoration: none;}
+
+			.mainmenu_on a.mainmenu_link:link, .mainmenu_on a.mainmenu_link:visited{font-weight: bold;color: #fff1ca;}
+
+
+			.layer_submenu_here{padding:10px; font-size:12px;background: #c9c9c9; color: #046e96;    font-weight: bold;text-decoration: none;}
+			.layer_submenu{padding:10px; font-size:12px;background: #c9c9c9;text-decoration: none;}
+		</style>
+
+
+		<div class="quick">
+			<ul>
+			<li><a href="/include/contents.php?pgID=ID14573969532"><img src="/siteSkin/default/images/header/quick4_title.gif" alt="특성화교육"></a></li>
+			<li>
+			<img src="/siteSkin/default/images/header/quick1_title.gif" alt="사이버강의실">
+				<select name="cyber_lecture" onchange = "toCyberpage(this.value)" style="font-size:9pt;">
+				    <option value="">교수선택</option>
+									
+					<option value = "kohcs">고창섭</option>
+									
+					<option value = "nsyoon">윤남식</option>
+									
+					<option value = "madwind">권오민</option>
+									
+					<option value = "jphong">홍종필</option>
+									
+					<option value = "mckim">김명진</option>
+									
+					<option value = "jjyun">윤재중</option>
+									
+					<option value = "gosketae">고석태</option>
+									
+					<option value = "ywkim83">김영욱</option>
+									
+					<option value = "kimsungjung">김성중</option>
+									
+					<option value = "youcheahwa">유채화</option>
+												<option value = "pdsetc">기타강의자료실</option>
+				</select>
+			</li>
+			<li><a href="/include/subPage.php?pgID=ID12415888741"><img src="/siteSkin/default/images/header/quick2_title.gif" alt="학과정보시스템"></a></li>
+			<li><a href="/include/subPage.php?pgID=ID12415886590"><img src="/siteSkin/default/images/header/quick3_title.gif" alt="My Page"></a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+		
+		<p class="sub_flash">
+
+
+		<!--embed src="/siteSkin/default/images/swf/sub_flash.swf" quality=high pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="940" height="186" wmode="transparent" ></embed-->
+		<div style='width:940px;height:186px;    margin-top: 50px;background: url("/siteSkin/default/images/header/sub_flash.jpg") repeat-y;' id='bg' ></div>
+
+		</p>
+
+	</div><!-- //header -->
+	<hr>
+
+	<div id="container">		
+		<div class="snb">
+			<img src='/siteSkin/default/images/label/label_05.gif' class='snb_title'>			<div class='submenu_here1'><a href='/bbs/bbs.php?db=notice&pgID=ID12415888101' class='submenu_link'><span  style='padding-left:5'><img align='absmiddle' src='/siteSkin/default/images/submenu/on1.gif' style='margin:0 5px 2px 0;'>공지&뉴스</span></a></div><div class='submenu1'><a href='/bbs/bbs.php?db=recruit&pgID=ID12415888181' class='submenu_link'><span  style='padding-left:5'><img align='absmiddle' src='/siteSkin/default/images/submenu/off1.gif' style='margin:0 5px 2px 0;'>취업정보</span></a></div><div class='submenu1'><a href='/bbs/bbs.php?db=gallery&pgID=ID12415888391' class='submenu_link'><span  style='padding-left:5'><img align='absmiddle' src='/siteSkin/default/images/submenu/off1.gif' style='margin:0 5px 2px 0;'>행사갤러리</span></a></div><div class='submenu1'><a href='/bbs/bbs.php?db=lnik&pgID=ID12415888581' class='submenu_link'><span  style='padding-left:5'><img align='absmiddle' src='/siteSkin/default/images/submenu/off1.gif' style='margin:0 5px 2px 0;'>관련사이트</span></a></div>		</div>
+
+		<div id="subContent">
+			<div class="title_box">
+				<div class="title"><span class='contents_title'>공지&뉴스</span></div>
+				<div class="path"><a href = "/">HOME</a> <img src='/siteSkin/default/images/title/icon.gif' align='absmiddle'> <span class='navi'><a href='/bbs/bbs.php?db=notice&pgID=ID12415888101'>커뮤니티</a></span> <img src='/siteSkin/default/images/title/icon.gif' align='absmiddle'> <span><a href='/bbs/bbs.php?db=notice&pgID=ID12415888101'>공지&뉴스</a></span>				</div>
+			</div>
+			<div class="clear"></div>
+
+			
+					<div class="section">
+					
+<html>
+<head>
+	<title>공지사항</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=EUC-KR">
+	<script language="javascript" nonce='691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061'>
+		function resizeImage(widthNum){
+			if(document.someImg){
+				var total = document.someImg.length;
+				if(total > 1){
+					for(i=0;i<total;i++){
+						if(document.someImg[i].width > widthNum){
+							document.someImg[i].width = widthNum;
+						}
+					}
+				}
+				else{
+					if(document.someImg.width > widthNum){
+						document.someImg.width = widthNum;
+					}
+				}
+			}
+		}
+		function showMember(userID){
+//			window.open('/bbs/member/memberView.php?memberID='+userID,'mV','menubars=0,width=450,height=550,left=50,top=150');
+		}
+	</script></head>
+<table cellpadding="0" cellspacing="0" width="700" style="table-layout:fixed">
+	<col/>
+	<col width="180"></col>
+	<col width="100"></col>
+		<tr>
+		<td colspan="3" style="padding:0 0 10 0;">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td id="body_line_plan">
+						<table cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td id="body_line_plan2"><br></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+		<tr class="head_top_line">
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="view_subject" style="padding:4px 10px 0 10px;" nowrap><nobr><span class="view_category"></span>[2026학년도 2학기 창업산학초청세미나 II] 12주차 특강 안내</nobr></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="view_blank"></td>
+	</tr>
+	<tr>
+		<td nowrap style="padding:3px 0 6px 11px;" id="view_bg"><nobr><span class="view_name">조교</nobr></td>
+		<td class="view_text" id="view_bg"><img src="/bbs/skin/bbs_notice/images/icon.gif" align="absmiddle">작성일 : <span class="view_num">2026-11-12 09:45:37<span></td>
+		<td class="view_text" align="right" style="padding:0 10px 0 0;" id="view_bg"><img src="/bbs/skin/bbs_notice/images/icon.gif" align="absmiddle">조회수 : <span class="view_num">33<span></td>
+	</tr>
+	<!--
+-->	<tr class="head_tail_line">
+		<td colspan="3"></td>
+	</tr>
+	<tr class="body_shadow">
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table width="100%" cellspacing="0" cellpadding="0" align="center">
+				<tr>
+					<td style="word-break:break-all; padding:12px 10px 18px 10px;" valign="top"><div id="articles" ><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4">[ 2026학년도 2학기 창업산학초청세미나 <font color="#444444"><span style="text-wrap-mode: nowrap;">Ⅱ</span></font>] 12주차 특강을 아래와 같이 안내합니다.&nbsp;</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial">1. 연사: 이천솔 (하나금융융합기술원)</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial">2. 일시: 2026년 11월 19일(목) / 16:00~18:00</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4">3. 장소: E9동 105호</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font face="arial" size="4">4. 대상: 전자정보대학 소속 학생 및 관심 있는 자&nbsp;</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial"><br></font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial">5. 문의: 컴퓨터공학과 사무실(E8-1동 402호)</font></div><div style="padding: 0px; margin: 0px; color: rgb(51, 51, 51); font-family: 굴림, Gulim, AppleGothic, sans-serif;"><font size="4" face="arial"><span style="white-space: pre;">		</span>T. (043)261-2449</font></div><!--"<--></a></xmp></xml></div></td>
+				</tr>
+							</table>
+		</td>
+	</tr>
+	
+
+	
+		<tr class="view_tail_line">
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td style="padding:7 0 0 4;" nowrap colspan="3">
+			<nobr><img src="/bbs/skin/bbs_notice/images/icon.gif" align="absmiddle"><span class="view_text">파일 1 : </span>
+			<span class="view_file"><a href="/bbs/include/download.php?no=4396&db=notice&fileno=1" onfocus="blur()">AI_시대,_전자정보인의_진로는_어디로.pdf</a></span>&nbsp;&nbsp;&nbsp;
+			<span class="view_num">Size : 599.4Kbyte&nbsp;&nbsp;&nbsp;Down : 4</span></nobr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="view_blank2"></td>
+	</tr>
+		<tr class="view_tail_line">
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td style="padding:7 0 0 4;" nowrap colspan="3">
+			<nobr><img src="/bbs/skin/bbs_notice/images/icon.gif" align="absmiddle"><span class="view_text">파일 2 : </span>
+			<span class="view_file"><a href="/bbs/include/download.php?no=4396&db=notice&fileno=2" onfocus="blur()">창업산학초청세미나_공고문(26.11.19.).pptx</a></span>&nbsp;&nbsp;&nbsp;
+			<span class="view_num">Size : 61.1Kbyte&nbsp;&nbsp;&nbsp;Down : 1</span></nobr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="view_blank2"></td>
+	</tr>
+	
+	
+	<tr class="tail_line">
+		<td colspan="3"></td>
+	</tr>
+	<tr class="tail_shadow">
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td height="50px" style="padding:14px 0 10px 0;">
+									<a href="/bbs/bbs.php?task=list&db=notice&no=4396&page=&search=&searchKey=&category=0&pgID=ID12415888101"><img src="/bbs/skin/bbs_notice/images/listlink.gif" align="absmiddle" alt="목록보기"></a>
+								</td>
+		<td style="padding:14px 0 10 0;" align="right" colspan="2">
+											</td>
+	</tr>
+</table>
+
+<html>
+<head>
+	<title>공지사항</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=EUC-KR">
+	<script language="javascript" nonce='691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061'>
+	<!--
+	function selectMover(sel, moveTarget)
+	{
+		var index = sel.selectedIndex;
+		if (sel.options[index].value != '') {
+			 if (moveTarget == 'blank') {
+				 window.open('/bbs/bbs.php?db=notice&page=&search_key=&search=&category='+sel.options[index].value, 'win1');
+			 } else {
+				 var frameobj;
+				 if (moveTarget == '') moveTarget = 'self';
+				 if ((frameobj = eval(moveTarget)) != null)
+				 frameobj.location = '/bbs/bbs.php?db=notice&page=&search_key=&search=&category='+sel.options[index].value;
+			 }
+		}
+	}
+	function showMember(userID){
+//		window.open('/bbs/member/memberView.php?memberID='+userID,'mV','menubars=0,width=450,height=550,left=50,top=150');
+	}
+	// -->
+</script>
+	<script language=javascript nonce="691e92f988c978fc512711ba7aef67b137767ae21dd2d3b85481ee5be94be061">
+
+		function checkAll(){
+			var df = document.listForm;
+			var i, chked=0;
+			for(i=0;i<df.elements.length;i++){
+				if(df[i].type=="checkbox"){
+					if(df[i].checked == true){
+						df[i].checked = false;
+					}
+					else{
+						df[i].checked = true;
+					}
+				}
+				else{
+				}
+			}
+		}
+
+		function delete_all(){
+			var check_nums = document.listForm.elements.length;
+			for(var i=0;i<check_nums;i++){
+				var checkbox_obj = eval("document.listForm.elements[" + i + "]");
+				if(checkbox_obj.checked == true){
+					break;
+				}
+			}
+
+			if(i == check_nums){
+				alert("삭제하고자 하는 글을 선택하십시오.");
+				return;
+			}
+			else{
+				result = confirm("정말 삭제 하시겠습니까?");
+				if(result == true){
+					document.listForm.action="/bbs/process/delete_all.php";
+					document.listForm.submit();
+				}
+				else{
+					return;
+				}
+			}
+		}
+
+		function checkVar(){
+			if(!document.search.search.value){
+				alert('검색어를 입력해 주세요.');
+				document.search.search.focus();
+				return false;
+			}
+			return true;
+		}
+
+		var check_searchId = false;
+		function search_id () {
+			if ( check_searchId ) return true;
+				document.search.search.style.backgroundImage ="";
+			check = true;
+			return true;
+			}
+
+	</script>
+</head>
+<table align="center" cellpadding="0" cellspacing="0" width="700" style="table-layout:fixed">
+	<col width="30%"></col>
+	<col width="70%"></col>
+			<tr>
+		<td colspan="2" style="padding:0 0 10 0;">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td id="body_line_plan">
+						<table cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td id="body_line_plan2"><br></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+		<tr>
+		<td height="25" class="head_page" style="padding:0 0 8 0"><img src="/bbs/skin/bbs_notice/images/total.gif" align="absmiddle" style="margin:2 0 0 0"> <span class="head_num">3285</span>.&nbsp;&nbsp;<img src="/bbs/skin/bbs_notice/images/page.gif" align="absmiddle" style="margin:2 0 0 0"> <span class="head_num">1</span><img src="/bbs/skin/bbs_notice/images/diagonal.gif" align="absmiddle" style="margin:2 0 0 0"><span class="head_num">219</span></td>
+<!---------- 카테고리 출력관련 시작  --------------->
+		<form name="cateForm">
+		<td style="padding:0 0 6 0" align="right">
+		  </td>
+	  </form>
+<!-------- 카테고리 출력관련 끝  ---------------->
+	</tr> 
+	<!---- 탭 카테고리 시작 ---->
+		<!---- 탭 카테고리 끝 ---->
+</table>
+
+<table align="center" cellpadding="0" cellspacing="0" width="700" style="table-layout:fixed">
+<form method="POST" name="listForm" style="margin:0px;">
+<input type="hidden" name="db" value="notice">
+<input type="hidden" name="page" value="1">
+<input type="hidden" name="searchKey" value="">
+<input type="hidden" name="search" value="">
+	<col width="50"></col>
+	<col width="3"></col>
+	<col/>
+	<col width="3"></col>
+		<col width="42"></col>
+	<col width="3"></col>
+		<col width="70"></col>
+	<col width="3"></col>
+	<col width="46"></col>
+
+	<tr class="head_top_line">
+		<td colspan="4"></td>
+				<td></td>
+		<td></td>
+				<td colspan="3"></td>
+	</tr>
+	<tr height="30px">
+		<td class="head_bold" style="border-left:1px solid #cdcdcd;">번호</span></td>
+		<td valign="top" class="head_line"><img src="/bbs/skin/bbs_notice/images/head_line.gif" height="12px" width="1px"></td>
+		<td class="head_bold">제목</span></td>
+		<td valign="top" class="head_line"><img src="/bbs/skin/bbs_notice/images/head_line.gif" height="12px" width="1px"></td>
+				<td class="head_bold">파일</span></td>
+		<td valign="top" class="head_line"><img src="/bbs/skin/bbs_notice/images/head_line.gif" height="12px" width="1px"></td>
+				<td class="head_bold">등록일</span></td>
+		<td valign="top" class="head_line"><img src="/bbs/skin/bbs_notice/images/head_line.gif" height="12px" width="1px"></td>
+		<td class="head_bold" style="border-right:1px solid #cdcdcd;">조회</span></td>
+	</tr>
+	<tr class="head_tail_line">
+		<td colspan="4"></td>
+				<td></td>
+		<td></td>
+				<td colspan="3"></td>
+	</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4396&page=1&search=&searchKey=&category=0">[2026학년도 2학기 창업산학초청세미나 II] 12주차 특강 안내<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4396&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-12</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">34</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4395&page=1&search=&searchKey=&category=0">2026 전자정보대학 캡스톤디자인 경진대회에 초대합니다<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><img src='/bbs/skin/bbs_notice/images/file_off.gif' align="absmiddle"></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-11</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">47</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4394&page=1&search=&searchKey=&category=0">2027학년도 1학기 대학원 석·박사학위 논문제출자격(외국어, 종...<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4394&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-11</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">25</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4393&page=1&search=&searchKey=&category=0">[반도체특성화대학사업단] 기업 견학(한국알박(주)) 프로그램 참...<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><img src='/bbs/skin/bbs_notice/images/file_off.gif' align="absmiddle"></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-11</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">16</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4392&page=1&search=&searchKey=&category=0">외부 미승인 AI 서비스의 E-campus 계정 연동 금지<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><img src='/bbs/skin/bbs_notice/images/file_off.gif' align="absmiddle"></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-11</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">17</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4391&page=1&search=&searchKey=&category=0">[중요] 2026학년도 전자정보대학 졸업작품전시회 일정 안내<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><img src='/bbs/skin/bbs_notice/images/file_off.gif' align="absmiddle"></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-09</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">56</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4390&page=1&search=&searchKey=&category=0">2026 제5회 충북ICT성과보고회 「지역대학 AI·ICT 우수 졸업작...<img src='/bbs/skin/bbs_notice/images/new.gif' border='0' align='absmiddle'></a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4390&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-09</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">19</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4389&page=1&search=&searchKey=&category=0">2026학년도 동계 LEVEL-UP 영어캠프 운영 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4389&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-06</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">25</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4388&page=1&search=&searchKey=&category=0">[2026학년도 2학기 창업산학초청세미나 II] 11주차 특강 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4388&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-05</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">27</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4387&page=1&search=&searchKey=&category=0">(재)관정재단 2027년도 장학생 신청 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4387&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-03</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">40</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4386&page=1&search=&searchKey=&category=0">2027학년도 1학기 개신프론티어 교과 이수학생 선발 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4386&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-02</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">14</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4384&page=1&search=&searchKey=&category=0">영어분야 레벨반 편성을 위한 모의토익(11월) 응시 희망자 명단 ...</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><img src='/bbs/skin/bbs_notice/images/file_off.gif' align="absmiddle"></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-02</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">6</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4383&page=1&search=&searchKey=&category=0">[2026학년도 2학기 창업산학초청세미나 II] 10주차 특강 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4383&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-11-02</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">23</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4382&page=1&search=&searchKey=&category=0">2026 AI 스마트에너지 메이커 과정 참가 모집 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4382&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-10-28</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">72</td>
+</tr>
+<tr onmouseover="this.style.backgroundColor='#F5F7FC'" onmouseout="this.style.backgroundColor=''"  height="30px">
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">notice</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="left" class="body_bold"><nobr><img src="/bbs/skin/bbs_notice/images/subject_icon.gif" align="absmiddle"> <a href="/bbs/bbs.php?task=view&db=notice&no=4381&page=1&search=&searchKey=&category=0">2026년 11월 채용설명회 일정 안내</a></nobr></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num"><a href="/bbs/include/download.php?no=4381&db=notice&fileno=1"><img src='/bbs/skin/bbs_notice/images/file_on.gif' align="absmiddle"></a></td>
+	<td id="body_line">&nbsp;</td>
+		<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">2026-10-26</td>
+	<td id="body_line">&nbsp;</td>
+	<td style="padding:2 0 0 0;" id="body_line" align="center" class="body_num">89</td>
+</tr>
+</form>
+</table>
+
+<table align="center" cellpadding="0" cellspacing="0" width="700">
+	<tr>
+		<td align="center" style="padding:10px 0 0 0;" colspan="2"><a href='#'><img src='/siteSkin/default/bbs/images/icon/nav_prev.gif' border='0' align='absmiddle'></a>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=1'><span class='page'>01</span></a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=2'>02</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=3'>03</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=4'>04</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=5'>05</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=6'>06</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=7'>07</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=8'>08</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=9'>09</a></span>&nbsp;<span class='page_here'><a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=10'>10</a></span> <a href='/bbs/bbs.php?db=notice&search=&searchKey=&category=0&page=11'><img align='absmiddle' src='/siteSkin/default/bbs/images/icon/nav_next.gif' border='0'></a></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="padding:0 0 10px 0;" align="right">
+						</td>
+	</tr>
+	<tr>
+		<td height="28" colspan="2" align="right">
+			<table cellpadding="0" cellspacing="0">
+			<form method="GET" name="search" action="/bbs/bbs.php" onsubmit="return checkVar()">
+			<input type="hidden" name="category" value="0">
+			<input type="hidden" name="db" value="notice">
+				<tr>
+					<td style="padding:0 3px 0 0;"><select name="searchKey" class="tail_select">
+						<option value="subject">제목----</option>
+						<option value="memo">내용</option>
+						<option value="name">작성자명</option>
+						</select></td>
+					<td style="padding:0 0 1px 0;"><input type="text" name="search" value="" class="tail_input" onkeydown="javascript:search_id()" onmousedown="javascript:search_id()" style="background-image:url(/bbs/skin/bbs_notice/images/main_id.gif); background-repeat:no-repeat; background-position:left;"></td>
+					<td>&nbsp;<input type="image" src="/bbs/skin/bbs_notice/images/search.gif" align="absmiddle"></td>
+				</tr>
+			</form>
+			</table>
+		</td>
+	</tr>
+</table>
+			</div><!-- //section-->
+			</div><!-- //subContent -->
+		</div><!-- //container -->
+		<hr>
+</div><!-- //wrap -->
+
+
+<div id="footer">
+<div class="section">
+	<ul>
+		<li class="first"><a href="/include/contents.php?pgID=ID12415887001">학부소개</a></li>
+		<li><a href="/include/subPage.php?pgID=ID12415887341">찾아오시는길</a></li>
+		<li><A HREF="/include/private.html"  onClick="window.open(this.href, 'newname', 'top=0,left=0,menubar=no,resize=no,width=740,height=550,scrollbars=yes'); return false;" onKeyPress="window.open(this.href, 'newname', 'top=0,left=0,menubar=no,resize=no,width=740,height=550,scrollbars=yes'); return false;"><span>개인정보처리방침</span></a></li>
+		<li><A HREF="/include/no_email.html"  onClick="window.open(this.href, 'newname', 'top=0,left=0,menubar=no,resize=no,width=240,height=180,scrollbars=yes'); return false;" onKeyPress="window.open(this.href, 'newname', 'top=0,left=0,menubar=no,resize=no,width=240,height=180,scrollbars=yes'); return false;">이메일무단수집거부</a></li>
+		<!-- <li><a href="/member/sitemap.php">사이트맵</a></li> -->
+		<div class="clear"></div>
+	</ul>
+	
+
+	<div class="f_link">
+		<form name="f_link2">
+<select  onChange="if(this.selectedIndex) { this.blur(); window.open(options[selectedIndex].value,'DOWN'); }"  name="f_link2_1">
+	<option value="">-- 학부 관련사이트 --</option>
+	<option value="https://ece.cbnu.ac.kr">전자정보대학</option>
+	<option value="https://ee.chungbuk.ac.kr/">전자공학과</option>
+	<option value="https://inform.chungbuk.ac.kr/">정보통신공학부</option>
+	<option value="https://computer.chungbuk.ac.kr/">컴퓨터공학과</option>
+	<option value="https://software.cbnu.ac.kr/">소프트웨어학부</option>
+	<option value="https://airobot.chungbuk.ac.kr/">지능로봇공학과</option>
+	<option value="https://semi.cbnu.ac.kr/">반도체공학부</option>
+</select>
+
+<select  onChange="if(this.selectedIndex) { this.blur(); window.open(options[selectedIndex].value,'DOWN'); }" name="f_link2_2">
+	<option value="">------ 교내주요사이트 ------</option>
+	<option value="http://www.cbnu.ac.kr">충북대학교</option>
+	<option value="http://ece.chungbuk.ac.kr">충북대학교 전자정보대학</option>
+	<option value="http://eis.cbnu.ac.kr">충북대학교 개신누리</option>
+	<option value="https://ipsi.chungbuk.ac.kr/">충북대학교 입학본부</option>
+	<option value="http://cbnubiz.chungbuk.ac.kr:8080/index.html">충북대학교 전자문서</option>
+	<option value="http://hrd.cbnu.ac.kr/">충북대학교 진로취업부</option>
+	<option value="https://cbnul.chungbuk.ac.kr/index.ax">충북대학교 중앙도서관</option>
+	<option value="https://icc.chungbuk.ac.kr/site/icc/main.do">충북대학교 정보화본부</option>
+	<option value="http://itrp.chungbuk.ac.kr/">학연산공동기술연구원</option>
+	<option value="http://gloria.chungbuk.ac.kr/">충북대학교 공동실험실습관</option>
+	<option value="http://sanhak.chungbuk.ac.kr/">충북대학교 산학협력단</option>
+	<option value="http://oira.cbnu.ac.kr/">충북대학교 교육혁신본부</option>
+	<option value="https://cia.chungbuk.ac.kr/">충북대학교 국제교류본부</option>
+
+</select>
+</form>	</div>
+	
+
+	<address>(28644) 충북 청주시 서원구 충대로 1 충북대학교 전자정보대학 전기공학부  E8-3동 354호 | TEL : 043) 261-2419 | FAX : 043-263-2419</address>
+	
+	<p class="copyright"><img src="/siteSkin/default/images/footer/cbnu.gif" alt="cbnu">Copyright &copy; School of Electrical Engineering. All Rights Reserved.</p>
+	</div><!-- //footer section -->
+</div><!-- //footer -->
+
+
+
+
+<a name="end"></a>
+
+<div id="floater" >
+</div>
+
+
+<div id="errorMessage" style="display:none;position:absolute;"></div>
+</body>
+</html>

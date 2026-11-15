@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-notice_notifier}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-5433}:5433"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -26,9 +26,9 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-notice_notifier}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-notice_notifier}
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
-      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_PROVIDER: ${LLM_PROVIDER:-google}
       LLM_API_KEY: ${LLM_API_KEY:-}
-      LLM_MODEL: ${LLM_MODEL:-claude-haiku-5-5}
+      LLM_MODEL: ${LLM_MODEL:-gemini-2.5-flash-lite}
       LLM_BASE_URL: ${LLM_BASE_URL:-}
     command: ["sh", "-c", "python -m app.db.migrate && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
     ports:

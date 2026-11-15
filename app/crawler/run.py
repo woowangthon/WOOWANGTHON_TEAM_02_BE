@@ -97,6 +97,33 @@ def _origin(url: str) -> tuple[str, str, int]:
         raise CrawlError("유효하지 않은 포트가 포함된 URL입니다.") from exc
 
 
+def _robots_allows(robots: RobotFileParser, url: str) -> bool:
+    """Respect robots rules, including an explicit Allow: /$ for the root page.
+
+    urllib's RobotFileParser escapes the end-anchor marker to %24, which makes
+    that otherwise valid root-only exception fail to match `/`.
+    """
+    if robots.can_fetch(USER_AGENT, url):
+        return True
+    parts = urlsplit(url)
+    if parts.path != "/" or parts.query or parts.fragment:
+        return False
+    agent = USER_AGENT.lower()
+    entries = [
+        entry
+        for entry in robots.entries
+        if any(name == "*" or name.lower() in agent for name in entry.useragents)
+    ]
+    if robots.default_entry is not None:
+        entries.append(robots.default_entry)
+    has_root_exception = any(
+        rule.allowance and rule.path in {"/$", "/%24"}
+        for entry in entries
+        for rule in entry.rulelines
+    )
+    return has_root_exception
+
+
 def _load_robots(
     fetcher: PoliteFetcher,
     list_url: str,
@@ -175,7 +202,7 @@ def _fetch_notices(
     visited_pages = {current_url}
     snapshot_complete = False
     for page_number in range(max_pages):
-        if not robots.can_fetch(USER_AGENT, current_url):
+        if not _robots_allows(robots, current_url):
             raise CrawlError("robots.txt가 목록 URL 수집을 허용하지 않습니다.")
         response = fetcher.get(current_url, expected_origin)
         page_summaries = parse_notice_list(response.text, current_url, parser_config)
@@ -210,7 +237,7 @@ def _fetch_notices(
             detail_failures += 1
             results.append(FetchedNotice(summary, ""))
             continue
-        if not robots.can_fetch(USER_AGENT, summary.original_url):
+        if not _robots_allows(robots, summary.original_url):
             detail_failures += 1
             results.append(FetchedNotice(summary, ""))
             continue
@@ -292,14 +319,15 @@ def _save_notices(
             ),
         ).fetchone()[0]
 
-        if changed:
-            retag_notice(
-                connection,
-                notice_id,
-                school_id,
-                f"{summary.title}\n{fetched.content}",
-                parser_config.get("target_department_name"),
-            )
+        # Rebuild audience tags on every crawl. Source department is provenance,
+        # not eligibility, and this also repairs tags created by older versions.
+        retag_notice(
+            connection,
+            notice_id,
+            school_id,
+            f"{summary.title}\n{fetched.content}",
+            title=summary.title,
+        )
 
     if parser_config.get("complete_snapshot") is True and snapshot_complete and external_ids:
         connection.execute(

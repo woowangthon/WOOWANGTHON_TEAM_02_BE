@@ -28,7 +28,8 @@
           <button class="feed-tab" id="recommended-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="recommended" data-endpoint="/api/recommendations">맞춤 공지</button>
           <button class="feed-tab active" id="all-tab" type="button" role="tab" aria-selected="true" aria-controls="notice-list" tabindex="0" data-view="all" data-endpoint="/api/notices?per_page=20">전체 공지</button>
           <button class="feed-tab" id="school-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="school" data-endpoint="/api/notices?per_page=20&amp;scope=school">학교 공지</button>
-          <button class="feed-tab" id="department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="department" data-endpoint="/api/notices?per_page=20&amp;scope=department">학과 공지</button>
+          <button class="feed-tab" id="department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="department" data-endpoint="/api/notices?per_page=20&amp;scope=department">내 학과</button>
+          <button class="feed-tab" id="other-department-tab" type="button" role="tab" aria-selected="false" aria-controls="notice-list" tabindex="-1" data-view="other_department" data-endpoint="/api/notices?per_page=20&amp;scope=other_department">다른 학과 · 지원 가능</button>
         </div>
       </div>
       <div id="notice-list" class="notice-list" role="tabpanel" aria-labelledby="all-tab"></div>
@@ -48,11 +49,13 @@
         <ul class="source-list">
           <li><a href="https://www.cbnu.ac.kr/www/selectBbsNttList.do?bbsNo=8&amp;key=814&amp;pageIndex=1&amp;searchCnd=all&amp;searchCtgry=" target="_blank" rel="noopener noreferrer">충북대학교 공식 공지</a></li>
           <li><a href="https://software.cbnu.ac.kr/sub0401" target="_blank" rel="noopener noreferrer">소프트웨어학부 공지</a></li>
+          <li><a href="https://computer.cbnu.ac.kr/" target="_blank" rel="noopener noreferrer">컴퓨터공학과 공지</a></li>
+          <li><a href="https://koamma.chungbuk.ac.kr/" target="_blank" rel="noopener noreferrer">전기공학부 공지</a></li>
         </ul>
       </section>
     </aside>
   </div>
 {% endblock %}
 {% block scripts %}
-  <script defer src="{{ url_for('static', path='/js/notices.js') }}"></script>
+  <script defer src="/static/js/notices.js"></script>
 {% endblock %}

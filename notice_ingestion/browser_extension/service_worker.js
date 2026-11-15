@@ -1,9 +1,8 @@
 const TARGETS = {
   computer: "https://computer.cbnu.ac.kr/",
-  electrical: "https://koamma.cbnu.ac.kr/index.php",
+  electrical: "https://koamma.chungbuk.ac.kr/index.php",
 };
 const DEPARTMENT_NAMES = { computer: "컴퓨터공학과", electrical: "전기공학부" };
-const EMPTY_BODY_LENGTH = 0;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "START_NOTICE_CHECK") {
@@ -26,7 +25,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function startCheck(department, apiBase) {
   if (!TARGETS[department]) throw new Error("학과를 확인할 수 없습니다.");
-  const normalizedApi = normalizeLocalApi(apiBase);
+  const normalizedApi = normalizeApiOrigin(apiBase);
   const checkId = String(Date.now());
   const sourceTab = await chrome.tabs.create({ url: "about:blank", active: false });
   await chrome.storage.local.set({
@@ -38,10 +37,17 @@ async function startCheck(department, apiBase) {
   await chrome.tabs.create({ url: chrome.runtime.getURL("results.html"), active: true });
 }
 
-function normalizeLocalApi(value) {
+function normalizeApiOrigin(value) {
   const parsed = new URL(value || "http://localhost:8000");
-  if (parsed.protocol !== "http:" || !["localhost", "127.0.0.1"].includes(parsed.hostname) || !["8000", "8001"].includes(parsed.port)) {
-    throw new Error("알려줌 주소는 localhost 또는 127.0.0.1의 8000/8001 포트여야 합니다.");
+  const isLocal = parsed.protocol === "http:"
+    && ["localhost", "127.0.0.1"].includes(parsed.hostname)
+    && ["8000", "8001"].includes(parsed.port);
+  const isProduction = parsed.protocol === "https:"
+    && parsed.hostname === "woowangthonteam02be-production.up.railway.app"
+    && (!parsed.port || parsed.port === "443");
+  if ((!isLocal && !isProduction) || parsed.username || parsed.password
+      || (parsed.pathname !== "/" && parsed.pathname !== "") || parsed.search || parsed.hash) {
+    throw new Error("알려줌 주소는 localhost:8000/8001 또는 공개 Railway 앱 주소여야 합니다.");
   }
   return parsed.origin;
 }
@@ -57,12 +63,10 @@ async function handlePageRead(message, senderTabId) {
 
   try {
     const known = await getKnownNoticeKeys(activeCheck.apiBase);
-    const newNotices = message.notices.flatMap((notice) => {
+    const newNotices = message.notices.map((notice) => {
       const key = keyFor(notice.department, notice.post_number);
-      const alreadyStored = known.has(key);
-      const contentLength = known.get(key) ?? 0;
-      if (alreadyStored && contentLength > EMPTY_BODY_LENGTH) return [];
-      return [{ ...notice, update_existing: alreadyStored }];
+      const existing = known.get(key);
+      return { ...notice, update_existing: Boolean(existing), content_length: existing?.contentLength ?? 0 };
     });
     await chrome.storage.local.set({
       lastCheck: {
@@ -148,7 +152,10 @@ async function getKnownNoticeKeys(apiBase) {
   }
   return new Map(
     rows
-      .map((row) => [keyFromStoredNotice(row), Number(row.content_length) || 0])
+      .map((row) => [keyFromStoredNotice(row), {
+        contentLength: Number(row.content_length) || 0,
+        title: String(row.title || ""),
+      }])
       .filter(([key]) => Boolean(key)),
   );
 }

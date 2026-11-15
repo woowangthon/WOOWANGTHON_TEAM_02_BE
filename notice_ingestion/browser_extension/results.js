@@ -27,7 +27,7 @@ function render(result) {
   summary.textContent = saved
     ? `${departmentName(saved.department)} ${saved.post_number}번 공지의 ${saved.update_existing ? "상세 내용을 갱신했습니다." : "상세 내용을 저장했습니다."}`
     : newCount || updateCount
-      ? [`새 공지 ${newCount}건`, `본문 보완 ${updateCount}건`].filter((label, index) => index === 0 ? newCount > 0 : updateCount > 0).join(" · ") + "을 찾았습니다."
+      ? [`새 공지 ${newCount}건`, `저장된 공지 ${updateCount}건(최신 내용 확인 가능)`].filter((label, index) => index === 0 ? newCount > 0 : updateCount > 0).join(" · ") + "을 찾았습니다."
       : "새 공지나 본문 보완 대상이 없습니다.";
   meta.textContent = `${departmentName(result.department)} · 목록 ${result.listCount}건 확인 · ${new Date(result.checkedAt).toLocaleString("ko-KR")}`;
 
@@ -45,7 +45,9 @@ function render(result) {
     link.href = notice.url;
     link.target = "_blank";
     link.rel = "noreferrer";
-    link.textContent = notice.update_existing ? "상세 다시 가져오기 →" : "상세 확인 및 저장 →";
+    link.textContent = notice.update_existing
+      ? notice.content_length > 0 ? "최신 내용으로 갱신 →" : "본문 보완하기 →"
+      : "상세 확인 및 저장 →";
     text.append(title, details);
     item.append(text, link);
     list.append(item);

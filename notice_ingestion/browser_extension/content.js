@@ -1,6 +1,11 @@
 (() => {
   const hostname = location.hostname.toLowerCase();
-  if (["localhost", "127.0.0.1"].includes(hostname) && location.pathname === "/extension-import") {
+  const appHosts = new Set([
+    "localhost",
+    "127.0.0.1",
+    "woowangthonteam02be-production.up.railway.app",
+  ]);
+  if (appHosts.has(hostname) && location.pathname === "/extension-import") {
     window.addEventListener("message", async (event) => {
       if (event.source !== window || event.origin !== location.origin) return;
       if (event.data?.source !== "cbnu-notice-extension" || event.data?.type !== "NOTICE_IMPORT_SAVED") return;
@@ -41,16 +46,22 @@
 function sendList(department) {
   const notices = [];
   const seen = new Set();
-  for (const anchor of document.querySelectorAll('a[href*="task=view"]')) {
+  const candidates = department === "computer"
+    ? document.querySelectorAll('span.defaulttabshowlist_subject a, a[href*="task=view"]')
+    : document.querySelectorAll('a[href*="task=view"]');
+  for (const anchor of candidates) {
     const url = new URL(anchor.href, location.href);
     if (url.searchParams.get("db") !== "notice") continue;
     const postNumber = url.searchParams.get("no");
-    const row = anchor.closest("tr");
-    if (!postNumber || !row || seen.has(postNumber)) continue;
+    if (!postNumber || seen.has(postNumber)) continue;
     const titleCopy = anchor.cloneNode(true);
     titleCopy.querySelectorAll("img, svg").forEach((node) => node.remove());
     const title = (titleCopy.textContent || "").replace(/\s+/g, " ").trim();
-    const dateMatch = (row.innerText || row.textContent || "").match(/\b\d{4}[-./]\s*\d{1,2}[-./]\s*\d{1,2}\b/);
+    let dateMatch = null;
+    let ancestor = anchor.closest("tr") || anchor.closest("span.defaulttabshowlist_subject") || anchor;
+    for (let depth = 0; ancestor && depth < 5 && !dateMatch; depth += 1, ancestor = ancestor.parentElement) {
+      dateMatch = (ancestor.innerText || ancestor.textContent || "").match(/\b\d{4}[-./]\s*\d{1,2}[-./]\s*\d{1,2}\b/);
+    }
     if (!title) continue;
     seen.add(postNumber);
     notices.push({

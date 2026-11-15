@@ -9,13 +9,20 @@ document.querySelector("#saveApi").addEventListener("click", async () => {
   const value = apiInput.value.trim().replace(/\/+$/, "");
   try {
     const parsed = new URL(value);
-    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || !["8000", "8001"].includes(parsed.port)) {
+    const isLocal = parsed.protocol === "http:"
+      && ["localhost", "127.0.0.1"].includes(parsed.hostname)
+      && ["8000", "8001"].includes(parsed.port);
+    const isProduction = parsed.protocol === "https:"
+      && parsed.hostname === "woowangthonteam02be-production.up.railway.app"
+      && (!parsed.port || parsed.port === "443");
+    if ((!isLocal && !isProduction) || parsed.username || parsed.password
+        || (parsed.pathname !== "/" && parsed.pathname !== "") || parsed.search || parsed.hash) {
       throw new Error();
     }
-    await chrome.storage.local.set({ apiBase: value });
+    await chrome.storage.local.set({ apiBase: parsed.origin });
     statusLine.textContent = "알려줌 주소를 저장했습니다.";
   } catch {
-    statusLine.textContent = "주소는 localhost 또는 127.0.0.1의 8000/8001 포트여야 합니다.";
+    statusLine.textContent = "localhost:8000/8001 또는 공개 Railway 앱 주소를 입력해 주세요.";
   }
 });
 

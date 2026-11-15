@@ -26,10 +26,8 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-notice_notifier}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-notice_notifier}
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
-      LLM_PROVIDER: ${LLM_PROVIDER:-google}
-      LLM_API_KEY: ${LLM_API_KEY:-}
-      LLM_MODEL: ${LLM_MODEL:-gemini-2.5-flash-lite}
-      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      AI_SERVICE_URL: ${AI_SERVICE_URL:-http://host.docker.internal:8001}
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN:-}
     command: ["sh", "-c", "python -m app.db.migrate && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
     ports:
       - "${APP_PORT:-8000}:8000"

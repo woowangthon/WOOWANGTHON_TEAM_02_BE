@@ -14,8 +14,8 @@
 - `app/auth`, `app/notices`, `app/crawler`, `app/tagging`: 백엔드 기능
 - `app/db`, `db`: PostgreSQL 연결, 마이그레이션, 시드 데이터
 - `app/templates`, `app/static`: 통합 앱이 렌더링하는 웹 화면 (FE 저장소의 화면과 동기화)
-- `app/chatbot`: 공지 후보 선별과 기존 LLM 어댑터
+- `app/chatbot`: 로그인 사용자의 공지 근거 선별 및 독립 AI 서비스 호출
 
 FE 화면 소스는 `WOOWANGTHON_TEAM_02_FE` 저장소에서 관리합니다. 화면을 수정하면 FE의 `templates/`, `static/` 내용을 이 저장소의 `app/templates/`, `app/static/`에도 반영해야 통합 앱에 적용됩니다.
 
-AI 독립 서비스의 요청 계약은 AI 저장소의 README를 참고하세요.
+AI 답변·생성형 요약·게시판 selector 제안은 별도 `WOOWANGTHON_TEAM_02_AI` 서비스가 담당합니다. BE는 로그인/학교별 접근 권한을 확인하고 공지 근거를 선별한 뒤 AI API를 호출합니다. 로컬에서는 AI 저장소를 포트 8001로 실행하고, 이 프로젝트 `.env`의 `AI_SERVICE_URL` 및 `AI_SERVICE_TOKEN`을 맞춰 설정하세요. 제공자 API 키(`LLM_API_KEY`)는 AI 서비스의 `.env`에만 저장합니다. API 계약과 실행 방법은 AI 저장소 README를 참고하세요.

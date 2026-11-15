@@ -11,10 +11,8 @@ from functools import lru_cache
 class Settings:
     database_url: str
     jwt_secret: str
-    llm_provider: str
-    llm_api_key: str | None
-    llm_model: str
-    llm_base_url: str | None
+    ai_service_url: str
+    ai_service_token: str | None
     cookie_secure: bool
 
 
@@ -27,9 +25,7 @@ def get_settings() -> Settings:
             "postgresql://notice_notifier:local_dev_only@localhost:5432/notice_notifier",
         ),
         jwt_secret=os.environ.get("JWT_SECRET", ""),
-        llm_provider=os.environ.get("LLM_PROVIDER", "google"),
-        llm_api_key=os.environ.get("LLM_API_KEY") or None,
-        llm_model=os.environ.get("LLM_MODEL", "gemini-2.5-flash-lite"),
-        llm_base_url=os.environ.get("LLM_BASE_URL") or None,
+        ai_service_url=os.environ.get("AI_SERVICE_URL", "http://host.docker.internal:8001"),
+        ai_service_token=os.environ.get("AI_SERVICE_TOKEN") or None,
         cookie_secure=os.environ.get("COOKIE_SECURE", "true").lower() == "true",
     )
